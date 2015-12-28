@@ -94,12 +94,14 @@ class SparkLine
     {
       textAlign(RIGHT);
       fill(0, 153, 255);
-      if(!Float.isNaN(dataMin))
+      //if(!Float.isNaN(dataMin))
+      if (!dataMin < 0)
       {
         text(nf(dataMin, 0, 2), x1 + (.65 * (x2 - x1)), (.55 * (plotY2 - plotY1)) + plotY1);
       }
       fill(255, 0, 0);
-      if(!Float.isNaN(dataMax))
+      //if(!Float.isNaN(dataMax))
+      if (!dataMin < 0)
       {
         text(nf(dataMax, 0, 2), x1 + (.75 * (x2 - x1)), (.55 * (plotY2 - plotY1)) + plotY1);
       }

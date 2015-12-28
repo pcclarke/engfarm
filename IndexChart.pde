@@ -21,8 +21,7 @@ class IndexChart
   HoverBox detail;
   Selection indexSelect;
   
-  IndexChart (float inputX1, float inputY1, float inputX2, float inputY2, FloatTable inputData, Selection inputSelect)
-  {
+  IndexChart (float inputX1, float inputY1, float inputX2, float inputY2, FloatTable inputData, Selection inputSelect) {
     x1 = inputX1;
     y1 = inputY1;
     x2 = inputX2;
@@ -50,8 +49,7 @@ class IndexChart
     }*/
   }
   
-  void drawChart()
-  {
+  void drawChart() {
     showDetail = false;
 
     drawBackground();
@@ -71,14 +69,12 @@ class IndexChart
     
     drawTicks(); 
     
-    if(showDetail)
-    {
+    if(showDetail) {
       detail.drawHover();
     }
   }
   
-  void drawBackground()
-  {
+  void drawBackground() {
     fill(background);
     rectMode(CORNERS);
     noStroke();
@@ -113,7 +109,6 @@ class IndexChart
     {
       if (chartData.isValid(row, col)) 
       {
-        
         float value = chartData.getFloat(row, col) / indexVal;        
         float x = map(years[row], indexSelect.getYearStart(), indexSelect.getYearEnd(), plotX1, plotX2);
         float y = map(value, indexMin, indexMax, plotY2, plotY1);     
@@ -288,10 +283,14 @@ class IndexChart
     int minRow;
     int maxRow;
     
-    dataMin = Float.MAX_VALUE;
+    /*dataMin = Float.MAX_VALUE;
     dataMax = -Float.MAX_VALUE;
     indexMin = Float.MAX_VALUE;
-    indexMax = -Float.MAX_VALUE;
+    indexMax = -Float.MAX_VALUE;*/
+    dataMin = 200;
+    dataMax = -200;
+    indexMin = 200;
+    indexMax = -200;
     
     for (int i = 0; i < chartData.getColumnCount(); i++)
     {

@@ -9,9 +9,9 @@ class RoundButton {
   int type;
   String name;
 
-  RoundButton (float x, float y, float inputRadius) {
-    this.x = x;
-    this.y = y;
+  RoundButton (float inputX, float inputY, float inputRadius) {
+    x = inputX;
+    y = inputY;
     radius = inputRadius;
     fillOnColour = color(150, 150, 255);
     fillOffColour = color(0);

@@ -2,14 +2,14 @@ class HoverBox
 {
   float x, y, w, h;
   PFont font;
-  String text;
+  String hoverText;
   
-  HoverBox (float x, float y, String inputText, PFont font) {
-    this.x = x;
-    this.y = y;
-    text = inputText;
+  HoverBox (float inputX, float inputY, String inputText, PFont font) {
+    x = inputX;
+    y = inputY;
+    hoverText = inputText;
     
-    w = 6 * text.length();
+    w = 6 * hoverText.length();
     h = 15;
     
     this.font = font;
@@ -33,11 +33,11 @@ class HoverBox
     textSize(12);
     textAlign(CENTER);
     if (x + w  * .5  > width) {
-      text(text, x - .5 * w, y - 8);
+      text(hoverText, x - .5 * w, y - 8);
     } else if (x - w * .5 < 0) {
-       text(text, x + .5 * w, y - 8); 
+       text(hoverText, x + .5 * w, y - 8); 
     } else {
-      text(text, x, y - 8);
+      text(hoverText, x, y - 8);
     }
     
     stroke(0);

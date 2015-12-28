@@ -12,13 +12,13 @@ class Button {
   boolean selected;
   boolean showBorder, hasSub;
 
-  Button (float x1, float y1, float x2, float y2, String name, int category) {
-    this.x1 = min(x1, x2);
-    this.y1 = min(y1, y2);
-    this.x2 = max(x1, x2);
-    this.y2 = max(y1, y2);
-    this.name = name;
-    this.category = category;
+  Button (float inputX1, float inputY1, float inputX2, float inputY2, String inputName, int inputCategory) {
+    x1 = min(inputX1, inputX2);
+    y1 = min(inputY1, inputY2);
+    x2 = max(inputX1, inputX2);
+    y2 = max(inputY1, inputY2);
+    name = inputName;
+    category = inputCategory;
 
     fillOffColour = color(252, 249, 240);
     fillOnColour = color(240);

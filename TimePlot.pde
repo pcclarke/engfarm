@@ -259,7 +259,8 @@ class TimePlot
     usage = inputUsage;
     greyed = new boolean[usage.length];
     
-    float m = -Float.MAX_VALUE;
+    //float m = -Float.MAX_VALUE;
+    float m = -200;
     for(int i = 0; i < chartData.getColumnCount(); i++)
     {
       if(usage[i])

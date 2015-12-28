@@ -160,7 +160,8 @@ class FloatTable {
     //if (col >= columnCount) return false;
     if (col >= data[row].length) return false;
     if (col < 0) return false;
-    return !Float.isNaN(data[row][col]);
+    return !(data[row][col] < 0);
+    //return !Float.isNaN(data[row][col]);
   }
 
   boolean isValidRange(int rowMin, int rowMax, int col)
@@ -181,7 +182,7 @@ class FloatTable {
     for (int i = rowMin; i < rowMax; i++)
     {
       if (col < data[i].length)
-      if (!Float.isNaN(data[i][col]))
+      //if (!Float.isNaN(data[i][col]))
         return true;
     }
     return false;
@@ -194,7 +195,7 @@ class FloatTable {
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (!Float.isNaN(data[i][col]) && data[i][col] > 0) {
+        if (/*!Float.isNaN(data[i][col]) &&*/ data[i][col] > 0) {
           fullCol[goodCount] = data[i][col];
           goodCount++;
         }
@@ -216,7 +217,7 @@ class FloatTable {
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (!Float.isNaN(data[i][col]) && data[i][col] > 0) {
+        if (/*!Float.isNaN(data[i][col]) &&*/ data[i][col] > 0) {
           fullCol[goodCount] = data[i][col];
           goodCount++;
         }
@@ -238,7 +239,7 @@ class FloatTable {
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (!Float.isNaN(data[i][col]) && data[i][col] > 0) {
+        if (/*!Float.isNaN(data[i][col]) &&*/ data[i][col] > 0) {
           fullCol[goodCount] = data[i][col];
           goodCount++;
         }
@@ -258,7 +259,7 @@ class FloatTable {
     //float m = Float.MAX_VALUE;
     float m = 200;
     for (int i = 0; i < rowCount; i++) {
-      if (!Float.isNaN(data[i][col])) {
+      if (/*!Float.isNaN(data[i][col]) &&*/ isValid(i, col)) {
         if (data[i][col] < m) {
           m = data[i][col];
         }
@@ -289,14 +290,13 @@ class FloatTable {
     {
       if (isValid(i, col)) 
       {
-        if (!Float.isNaN(data[i][col])) 
-        {
+        //if (!Float.isNaN(data[i][col])) {
           if (data[i][col] < m) 
           {
             m = data[i][col];
             minRow = i;
           }
-        }
+        //}
       }
     }
     return minRow;
@@ -338,11 +338,11 @@ class FloatTable {
     //float m = -Float.MAX_VALUE;
     float m = -200;
     for (int i = 1; i < columnCount; i++) {
-      if (!Float.isNaN(data[row][i])) {
+      //if (!Float.isNaN(data[row][i])) {
         if (data[row][i] > m) {
           m = data[row][i];
         }
-      }
+      //}
     }
     return m;
   }

@@ -53,18 +53,12 @@ void setup()
   
   second = new IndexChart(400, 215, 1024, 768, data, mainSelection);
   
-  
-  
-  String[] fontList = PFont.list();
-println(fontList);
-  
   body20 = createFont("Encode Sans Condensed", 20);
-  gillDisplay = createFont("Libre Caslon Text", 48);
+  gillDisplay = createFont("Libre Caslon Text", 50);
   
   assignColour();
 
   smooth();
-  //println(PFont.list());
 }
 
 void draw()

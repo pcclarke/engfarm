@@ -143,7 +143,7 @@ class IndexChart
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col));
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col), body20);
         }
       }
     }
@@ -153,7 +153,7 @@ class IndexChart
   void drawTicks() 
   {
     fill(0);
-    textFont(futura20);
+    textFont(body20);
     textSize(10);
     textAlign(RIGHT, CENTER);
     
@@ -189,7 +189,7 @@ class IndexChart
   void drawYearLabels() 
   {
     fill(0);
-    textFont(futura20);
+    textFont(body20);
     textSize(10);
     textAlign(CENTER, TOP);
     

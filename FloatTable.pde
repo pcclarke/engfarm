@@ -255,7 +255,8 @@ class FloatTable {
   
   float getColumnMin(int col) 
   {
-    float m = Float.MAX_VALUE;
+    //float m = Float.MAX_VALUE;
+    float m = 200;
     for (int i = 0; i < rowCount; i++) {
       if (!Float.isNaN(data[i][col])) {
         if (data[i][col] < m) {
@@ -267,7 +268,8 @@ class FloatTable {
   }
   
   float getColumnMax(int col) {
-    float m = -Float.MAX_VALUE;
+    //float m = -Float.MAX_VALUE;
+    float m = -200;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
         if (data[i][col] > m) {
@@ -280,7 +282,8 @@ class FloatTable {
   
   int getColumnMinRange(int col, int min, int max) 
   {
-    float m = Float.MAX_VALUE;
+    //float m = Float.MAX_VALUE;
+    float m = 200;
     int minRow = 0;
     for (int i = min; i <= max; i++) 
     {
@@ -301,7 +304,8 @@ class FloatTable {
   
   int getColumnMaxRange(int col, int min, int max) 
   {
-    float m = -Float.MAX_VALUE;
+    //float m = -Float.MAX_VALUE;
+    float m = -200;
     int maxRow = 1;
     for (int i = min; i <= max; i++) 
     {
@@ -317,7 +321,8 @@ class FloatTable {
 
   
   float getRowMin(int row) {
-    float m = Float.MAX_VALUE;
+    //float m = Float.MAX_VALUE;
+    float m = 200;
     for (int i = 0; i < columnCount; i++) {
       if (isValid(row, i)) {
         if (data[row][i] < m) {
@@ -330,7 +335,8 @@ class FloatTable {
 
   
   float getRowMax(int row) {
-    float m = -Float.MAX_VALUE;
+    //float m = -Float.MAX_VALUE;
+    float m = -200;
     for (int i = 1; i < columnCount; i++) {
       if (!Float.isNaN(data[row][i])) {
         if (data[row][i] > m) {
@@ -343,7 +349,8 @@ class FloatTable {
   
   
   float getTableMin() {
-    float m = Float.MAX_VALUE;
+    //float m = Float.MAX_VALUE;
+    float m = 200;
     for (int i = 0; i < rowCount; i++) {
       for (int j = 0; j < columnCount; j++) {
         if (isValid(i, j)) {
@@ -357,7 +364,8 @@ class FloatTable {
   }
   
   float getTableMinRange(int min, int max) {
-    float m = Float.MAX_VALUE;
+    //float m = Float.MAX_VALUE;
+    float m = 200;
     for (int i = min; i < max; i++) {
       for (int j = 0; j < columnCount; j++) {
         if (isValid(i, j)) {
@@ -372,7 +380,8 @@ class FloatTable {
 
   
   float getTableMax() {
-    float m = -Float.MAX_VALUE;
+    //float m = -Float.MAX_VALUE;
+    float m = -200;
     for (int i = 0; i < rowCount; i++) 
     {
       for (int j = 0; j < columnCount; j++) 
@@ -389,8 +398,9 @@ class FloatTable {
     return m;
   }
   
-    float getTableMaxRange(int min, int max) {
-    float m = -Float.MAX_VALUE;
+  float getTableMaxRange(int min, int max) {
+    //float m = -Float.MAX_VALUE;
+    float m = -200;
     for (int i = min; i < max; i++) 
     {
       for (int j = 0; j < columnCount; j++) 

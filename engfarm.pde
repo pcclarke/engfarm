@@ -8,7 +8,7 @@ SparkLine[] sparks;
 SparkManager overSparks;
 IndexChart second;
 
-PFont futura20, gillDisplay;
+PFont body20, gillDisplay;
 
 void setup()
 {
@@ -51,7 +51,7 @@ void setup()
   
   second = new IndexChart(400, 215, 1024, 768, data, mainSelection);
   
-  futura20 = createFont("EncodeSansCondensed-Regular.ttf", 20);
+  body20 = createFont("EncodeSansCondensed-Regular.ttf", 20);
   gillDisplay = createFont("LibreCaslonText-Bold.ttf", 48);
   
   assignColour();
@@ -72,7 +72,7 @@ void draw()
   text("English Agricultural Prices 1500\u20131914", 25, 60);
 
   fill(50);
-  textFont(futura20);
+  textFont(body20);
   textSize(10);
   text("low", 267, 205);
   text("high", 307, 205);

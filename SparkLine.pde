@@ -76,7 +76,7 @@ class SparkLine
   {
     showDetail = false;
     
-    textFont(futura20);
+    textFont(body20);
     textSize(10);
 
     if(mDragging && checkMouse())
@@ -238,7 +238,7 @@ class SparkLine
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, sparkData.getColumnName(col) + " " + years[row] + ": " + value);
+          detail = new HoverBox(x, y, sparkData.getColumnName(col) + " " + years[row] + ": " + value, body20);
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey
@@ -283,7 +283,7 @@ class SparkLine
  
   void drawTicks() {
     fill(0);
-    textFont(futura20);
+    textFont(body20);
     textSize(10);
     textAlign(RIGHT, CENTER);
     

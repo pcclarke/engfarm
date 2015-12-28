@@ -1,87 +1,71 @@
 //**********************************
 //Button Class - This makes Buttons!
 //**********************************
-class Button
-{
-  float Xposa;
-  float Yposa;
-  float Xposb;
-  float Yposb;
+class Button {
+  float x1, y1, x2, y2;
   String name, sub;
   int category;
   char align;
-  color fillOnColour;
-  color fillOffColour;
+  color fillOnColour, fillOffColour;
   color textColour;
   color borderColour;
-  boolean state;
+  boolean selected;
   boolean showBorder, hasSub;
 
-  Button (float inputXposa, float inputYposa, float inputXposb, float inputYposb, String inputName, int inputCategory)
-  {
-    Xposa = min(inputXposa, inputXposb);
-    Yposa = min(inputYposa, inputYposb);
-    Xposb = max(inputXposa, inputXposb);
-    Yposb = max(inputYposa, inputYposb);
-    name = inputName;
-    category = inputCategory;
+  Button (float x1, float y1, float x2, float y2, String name, int category) {
+    this.x1 = min(x1, x2);
+    this.y1 = min(y1, y2);
+    this.x2 = max(x1, x2);
+    this.y2 = max(y1, y2);
+    this.name = name;
+    this.category = category;
 
     fillOffColour = color(252, 249, 240);
     fillOnColour = color(240);
     textColour = color(0);
     borderColour = color(220);
 
-    state = false;
+    selected = false;
     showBorder = false;
     hasSub = false;
 
     align = 'c';
   }
   
-  void setPos(float inputXposa, float inputYposa, float inputXposb, float inputYposb)
-  {
-    Xposa = min(inputXposa, inputXposb);
-    Yposa = min(inputYposa, inputYposb);
-    Xposb = max(inputXposa, inputXposb);
-    Yposb = max(inputYposa, inputYposb);
+  void setPos(float inputx1, float inputy1, float inputx2, float inputy2) {
+    x1 = min(inputx1, inputx2);
+    y1 = min(inputy1, inputy2);
+    x2 = max(inputx1, inputx2);
+    y2 = max(inputy1, inputy2);
   }
 
-  void setAlign(char ali)
-  {
+  void setAlign(char ali) {
     align = ali;
   }
   
-  void setState (boolean inputState)
-  {
-    state = inputState;
+  void setState (boolean inputSelected) {
+    selected = inputSelected;
   }
   
-  void setFillOffColour(color inputColour)
-  {
+  void setFillOffColour(color inputColour) {
     fillOffColour = inputColour;
   }
 
-  boolean checkMouse()
-  {
-    if ((mouseX < Xposb) && (mouseX > Xposa) && (mouseY < Yposb) && (mouseY > Yposa))
-    {
+  boolean checkMouse() {
+    if ((mouseX < x2) && (mouseX > x1) && (mouseY < y2) && (mouseY > y1)) {
       showBorder = true;
       return true;     
-    }
-    else
-    {
+    } else {
       showBorder = false;
       return false;
     }
   }
   
-  boolean getState()
-  {
-    return state;
+  boolean getState() {
+    return selected;
   }
 
-  String getName()
-  {
+  String getName() {
     return name;
   }
 
@@ -90,26 +74,21 @@ class Button
     hasSub = true;
   }
 
-  int getCategory()
-  {
+  int getCategory() {
     return category;
   }
   
-  void setBorder(boolean inputBorder)
-  {
+  void setBorder(boolean inputBorder) {
       showBorder = inputBorder;
   }
 
-  void draw()
-  {
+  void draw() {
     noStroke();
-    if (state == false)
-    {
-      fill(fillOffColour);
-    }
-    else if (state == true)
-    {
+    
+    if (selected) {
       fill(fillOnColour);
+    } else {
+      fill(fillOffColour);
     }
     
     if (showBorder) {
@@ -120,59 +99,57 @@ class Button
     } 
       
     rectMode(CORNERS);
-    rect(Xposa, Yposa, Xposb, Yposb);
+    rect(x1, y1, x2, y2);
 
     fill(textColour);
     textSize(10);
 
-    if (Yposb - Yposa < 25) {
+    if (y2 - y1 < 25) {
       switch(align)
       {
         case 'l':
           textAlign(LEFT);
-          text(name, Xposa + 5, Yposa + 4 + (0.5 * (Yposb - Yposa)));
+          text(name, x1 + 5, y1 + 4 + (0.5 * (y2 - y1)));
           break;
         case 'c':
           textAlign(CENTER);
-          text(name, Xposa + (0.5 * (Xposb - Xposa)), Yposa + 4 + (0.5 * (Yposb - Yposa)));
+          text(name, x1 + (0.5 * (x2 - x1)), y1 + 4 + (0.5 * (y2 - y1)));
           break;
         case 'r':
           textAlign(RIGHT);
-          text(name, Xposb - 5, Yposa + 4 + (0.5 * (Yposb - Yposa)));
+          text(name, x2 - 5, y1 + 4 + (0.5 * (y2 - y1)));
           break;
       }
-    }
-    else {
+    } else {
       textSize(12);
       switch(align)
       {
         case 'l':
           textAlign(LEFT);
-          text(name, Xposa + 5, Yposa + 4 + (0.35 * (Yposb - Yposa)));
+          text(name, x1 + 5, y1 + 4 + (0.35 * (y2 - y1)));
           if (hasSub) {
             fill(128);
-            text(sub, Xposa + 5, Yposa + 4 + (0.65 * (Yposb - Yposa)));  
+            text(sub, x1 + 5, y1 + 4 + (0.65 * (y2 - y1)));  
           }
           break;
         case 'c':
           textAlign(CENTER);
-          text(name, Xposa + (0.5 * (Xposb - Xposa)), Yposa + 4 + (0.35 * (Yposb - Yposa)));
+          text(name, x1 + (0.5 * (x2 - x1)), y1 + 4 + (0.35 * (y2 - y1)));
           if (hasSub) {
             fill(128);
-            text(sub, Xposa + (0.5 * (Xposb - Xposa)), Yposa + 4 + (0.65 * (Yposb - Yposa)));
+            text(sub, x1 + (0.5 * (x2 - x1)), y1 + 4 + (0.65 * (y2 - y1)));
           }
           break;
         case 'r':
           textAlign(RIGHT);
-          text(name, Xposb - 5, Yposa + 4 + (0.35 * (Yposb - Yposa)));
+          text(name, x2 - 5, y1 + 4 + (0.35 * (y2 - y1)));
           if (hasSub) {
             fill(128);
-            text(sub, Xposb - 5, Yposa + 4 + (0.65 * (Yposb - Yposa)));
+            text(sub, x2 - 5, y1 + 4 + (0.65 * (y2 - y1)));
           }
           break;
       }
     }
-
     
   }
 }

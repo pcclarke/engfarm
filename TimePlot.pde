@@ -51,7 +51,7 @@ class TimePlot
     showDetail = false;
     
     fill(0);
-    textFont(futura20);
+    textFont(body20);
     textSize(12);
     textAlign(LEFT);
     text("1860-9", x1, (.4 * (plotY2 - plotY1)) + plotY1);
@@ -103,7 +103,7 @@ class TimePlot
 
       if (abs(selX2 - selX1) > 40) {
         textAlign(LEFT);
-        textFont(futura20);
+        textFont(body20);
         textSize(10);
         fill(0);
         if (selX2 > selX1) {
@@ -172,7 +172,7 @@ class TimePlot
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value);
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value, body20);
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey
@@ -198,7 +198,7 @@ class TimePlot
   void drawTicks() 
   {
     fill(0);
-    textFont(futura20);
+    textFont(body20);
     textSize(10);
     textAlign(RIGHT, CENTER);
     
@@ -227,7 +227,7 @@ class TimePlot
   void drawYearLabels() 
   {
     fill(0);
-    textFont(futura20);
+    textFont(body20);
     textSize(10);
     //textAlign(CENTER, TOP);
     textAlign(LEFT);

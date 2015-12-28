@@ -1,38 +1,34 @@
 //**********************************
 //ROUND BUTTON
 //**********************************
-class RoundButton
-{
-  boolean state;
+class RoundButton {
+  boolean selected;
   char shape;
   color fillOnColour, fillOffColour;
-  float xPos, yPos, radius;
+  float x, y, radius;
   int type;
   String name;
 
-  RoundButton (float inputXPos, float inputYPos, float inputRadius)
-  {
-    xPos = inputXPos;
-    yPos = inputYPos;
+  RoundButton (float x, float y, float inputRadius) {
+    this.x = x;
+    this.y = y;
     radius = inputRadius;
     fillOnColour = color(150, 150, 255);
     fillOffColour = color(0);
     shape = 'a';
-    state = false;
+    selected = false;
   }
   
-  void draw()
-  {
+  void draw() {
     // Draw circle
     noStroke();
-    if (state) {
+    if (selected) {
       fill(fillOnColour);
-    }
-    else {
+    } else {
       fill(fillOffColour);
     }
     ellipseMode(CENTER);
-    ellipse(xPos, yPos, radius, radius);
+    ellipse(x, y, radius, radius);
 
     if (shape == 'a') {
       drawArrow();  
@@ -45,42 +41,37 @@ class RoundButton
   void drawArrow() {
     stroke(255);
     strokeWeight(2);  
-    if (state) {
-      line(xPos + .25 * radius, yPos - .25 * radius, xPos - .25 * radius, yPos);
-      line(xPos - .25 * radius, yPos, xPos + .25 * radius, yPos + .25 * radius);
-    }
-    else {
-    line(xPos - .25 * radius, yPos - .25 * radius, xPos + .25 * radius, yPos);
-    line(xPos + .25 * radius, yPos, xPos - .25 * radius, yPos + .25 * radius);
+    if (selected) {
+      line(x + .25 * radius, y - .25 * radius, x - .25 * radius, y);
+      line(x - .25 * radius, y, x + .25 * radius, y + .25 * radius);
+    } else {
+      line(x - .25 * radius, y - .25 * radius, x + .25 * radius, y);
+      line(x + .25 * radius, y, x - .25 * radius, y + .25 * radius);
     }
   }
 
-  void drawLock()
-  {
+  void drawLock() {
     stroke(255);
     strokeWeight(1);  
-    arc(xPos, yPos - .15 * radius, .25 * radius, .4 * radius, PI, 2 * PI);
+    arc(x, y - .15 * radius, .25 * radius, .4 * radius, PI, 2 * PI);
     noStroke();
     fill(255);
     rectMode(CORNER);
-    rect(xPos - .25 * radius, yPos - .15 * radius, .5 * radius, .5 * radius);
+    rect(x - .25 * radius, y - .15 * radius, .5 * radius, .5 * radius);
   }
 
   
-  void setPos(float inputXPos, float inputYPos)
-  {
-    xPos = inputXPos;
-    yPos = inputYPos;
+  void setPos(float inputXPos, float inputYPos) {
+    x = inputXPos;
+    y = inputYPos;
   }
   
-  void setState (boolean inputState)
-  {
-    state = inputState;
+  void setState (boolean inputSelected) {
+    selected = inputSelected;
   }
   
-  void flipState()
-  {
-    state = state ? false : true;
+  void flipState() {
+    selected = selected ? false : true;
   }
 
   void setShape(char inputShape) {
@@ -94,7 +85,7 @@ class RoundButton
 
   boolean checkMouse()
   {
-    if (sqrt((sq(mouseX - xPos) + sq(mouseY - yPos))) < radius)
+    if (sqrt((sq(mouseX - x) + sq(mouseY - y))) < radius)
     {
       flipState();
       return true;
@@ -107,7 +98,7 @@ class RoundButton
   
   boolean getState()
   {
-    return state;
+    return selected;
   }
 
   String getName()

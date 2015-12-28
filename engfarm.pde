@@ -1,3 +1,5 @@
+/* @pjs font="EncodeSansCondensed-Regular.ttf, LibreCaslonText-Bold.ttf"; */
+
 int selectMinRow, selectMaxRow;
 
 DataPlot[] plots;
@@ -51,8 +53,13 @@ void setup()
   
   second = new IndexChart(400, 215, 1024, 768, data, mainSelection);
   
-  body20 = createFont("EncodeSansCondensed-Regular.ttf", 20);
-  gillDisplay = createFont("LibreCaslonText-Bold.ttf", 48);
+  
+  
+  String[] fontList = PFont.list();
+println(fontList);
+  
+  body20 = createFont("Encode Sans Condensed", 20);
+  gillDisplay = createFont("Libre Caslon Text", 48);
   
   assignColour();
 

@@ -1,5 +1,4 @@
-class HoverBox
-{
+class HoverBox {
   float x, y, w, h;
   PFont font;
   String hoverText;

@@ -1,5 +1,9 @@
-class TimePlot
-{
+//********************************************************************
+// TimePlot
+// Draws a line chart with a selection area
+//********************************************************************
+
+class TimePlot {
   boolean[] usage;
   boolean[] greyed;
   boolean showDetail, selMode;
@@ -9,6 +13,7 @@ class TimePlot
   
   float x1, y1, x2, y2; 
   float plotX1, plotY1, plotX2, plotY2;
+  float[] padding;
   float dataMin, dataMax; 
   float mouseTrackX, mouseTrackY;
   float selX1, selX2;
@@ -20,14 +25,17 @@ class TimePlot
   int tickInterval = 75;
   int selYear1, selYear2;
   
+  PFont font;
+  
   FloatTable chartData;
   HoverBox detail;
   Selection timeSelect;
   
-  TimePlot (float inputX1, float inputY1, float inputX2, float inputY2, FloatTable inputData, Selection inputSelect)
-  {
+  TimePlot (float inputX1, float inputY1, float inputX2, float inputY2, FloatTable inputData, Selection inputSelect) {
     x1 = inputX1;
+    y1 = inputY1;
     x2 = inputX2;
+    y2 = inputY2;
     plotX1 = inputX1 + 75;
     plotY1 = inputY1;
     plotX2 = inputX2 - 25;
@@ -38,6 +46,7 @@ class TimePlot
     
     background = color(255);
     plotColour = new color[chartData.getColumnCount()];
+    this.font = createFont("Arial", 20);
     
     rowCount = chartData.getRowCount();
     years = chartData.getRowNames();
@@ -46,12 +55,12 @@ class TimePlot
     dataMax = chartData.getTableMax();
   }
   
-  void drawChart()
-  {
+  // 
+  void drawChart() {
     showDetail = false;
     
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(12);
     textAlign(LEFT);
     text("1860-9", x1, (.4 * (plotY2 - plotY1)) + plotY1);
@@ -67,26 +76,21 @@ class TimePlot
        
     drawYearLabels();
     
-    for(int i = 0; i < chartData.getColumnCount(); i++)
-    {
-      if(usage[i])
-      {
+    for(int i = 0; i < chartData.getColumnCount(); i++) {
+      if(usage[i]) {
         drawDataCurve(i);
       }
     }
     
     drawTicks(); 
     
-    if(showDetail)
-    {
+    if(showDetail) {
       detail.drawHover();
     }
   }
   
-  void drawSelection(boolean selectionMode)
-  {
-    if(selectionMode)
-    {
+  void drawSelection(boolean selectionMode) {
+    if(selectionMode) {
       noStroke();
       fill(240);
       rect(selX1, plotY1, selX2, plotY2);
@@ -103,7 +107,7 @@ class TimePlot
 
       if (abs(selX2 - selX1) > 40) {
         textAlign(LEFT);
-        textFont(body20);
+        textFont(font);
         textSize(10);
         fill(0);
         if (selX2 > selX1) {
@@ -119,39 +123,29 @@ class TimePlot
     }
   }
   
-  void drawDataCurve(int col) 
-  {    
+  void drawDataCurve(int col)  {    
     noFill();
-    if (greyed[col])
-    {
+    if (greyed[col]) {
       stroke(180);
-    }
-    else
-    {
+    } else {
       stroke(plotColour[col]);
     }
     strokeWeight(1);
     beginShape();
-    for (int row = 0; row < rowCount; row++) 
-    {
-      if (chartData.isValid(row, col)) 
-      {
+    for (int row = 0; row < rowCount; row++) {
+      if (chartData.isValid(row, col)) {
         float value = chartData.getFloat(row, col);
         float x = map(years[row], yearMin, yearMax, plotX1, plotX2);
         float y = map(value, dataMin, dataMax, plotY2, plotY1);        
-        if (!chartData.isValid(row - 1, col))
-        {
+        if (!chartData.isValid(row - 1, col)) {
           curveVertex(x, y);
           curveVertex(x, y);
           endShape(); 
           
           noFill();
-          if (greyed[col])
-          {
+          if (greyed[col]) {
             stroke(180);
-          }
-          else
-          {
+          } else {
             stroke(plotColour[col]);
           }
           strokeWeight(1);
@@ -161,23 +155,20 @@ class TimePlot
         }
         curveVertex(x, y);
         // Double the curve points for the start and stop
-        if ((row == 0) || (row == rowCount -1)) 
-        {
+        if ((row == 0) || (row == rowCount -1)) {
           curveVertex(x, y);
         }
         //
-        if (dist(mouseX, mouseY, x, y) < 5  && !showDetail) 
-        { 
+        if (dist(mouseX, mouseY, x, y) < 5  && !showDetail) { 
           showDetail = true;
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value, body20);
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value, font);
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey
-      else if (!chartData.isValid(row, col) && chartData.isValid(row - 1, col))
-      {
+      else if (!chartData.isValid(row, col) && chartData.isValid(row - 1, col)) {
         float value = chartData.getFloat(row - 1, col);
         float x = map(years[row - 1], yearMin, yearMax, plotX1, plotX2);
         float y = map(value, dataMin, dataMax, plotY2, plotY1);  
@@ -195,10 +186,9 @@ class TimePlot
     endShape();
   }
  
-  void drawTicks() 
-  {
+  void drawTicks() {
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(10);
     textAlign(RIGHT, CENTER);
     
@@ -210,7 +200,7 @@ class TimePlot
       float y = map(v, dataMin, dataMax, plotY2, plotY1);
       if (v % tickInterval == 0) { // If a major tick mark
         if (v == dataMin) {
-          textAlign(RIGHT); // ALign by the bottom
+          textAlign(RIGHT); // Align by the bottom
         } else if (v == dataMax) {
           textAlign(RIGHT, TOP); // Align by the top
         } else {
@@ -224,49 +214,41 @@ class TimePlot
     }
   }
   
-  void drawYearLabels() 
-  {
+  // Draw the year labels below the chart, & vertical lines in the chart
+  void drawYearLabels() {
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(10);
-    //textAlign(CENTER, TOP);
     textAlign(LEFT);
     
     // Use thin, grey lines to draw the grid.
     stroke(224);
     strokeWeight(1);
     
-    for (int row = yearMin; row < yearMax; row++) 
-    {
-      if ((row % yearInterval) == 0)
-      {
+    for (int row = yearMin; row < yearMax; row++) {
+      if ((row % yearInterval) == 0) {
         float x = map(row, yearMin, yearMax, plotX1, plotX2);
         text(row, x, plotY2 + 15);
         line(x, plotY1, x, plotY2);
-        /*float x = map(row, yearMin, yearMax, plotX1, plotX2);
-        pushMatrix();
-        translate(x - 20, plotY2 + 22);
-        rotate(-PI/4);  
-        text(row, 0, 0);
-        popMatrix();
-        line(x, plotY1, x, plotY2);*/
       }
     }
   }
   
-  void setUsage(boolean[] inputUsage)
-  {
+  // Sets the font used in the chart
+  void setFont(PFont font) {
+    this.font = font;
+  }
+  
+  
+  void setUsage(boolean[] inputUsage) {
     usage = inputUsage;
     greyed = new boolean[usage.length];
     
     //float m = -Float.MAX_VALUE;
     float m = -200;
-    for(int i = 0; i < chartData.getColumnCount(); i++)
-    {
-      if(usage[i])
-      {
-        if (m < chartData.getColumnMax(i))
-        {
+    for(int i = 0; i < chartData.getColumnCount(); i++) {
+      if(usage[i]) {
+        if (m < chartData.getColumnMax(i)) {
           m = chartData.getColumnMax(i);
         }
         plotColour[i] = assignColour(i);
@@ -275,68 +257,44 @@ class TimePlot
     dataMax = m;
   }
   
-  void mPressed()
-  {
-            
-    if(checkMouse())
-    {
-      if (mouseButton == LEFT)
-      {
-        if (dist(mouseX, mouseY, mouseTrackX, mouseTrackY) < 2)
-        {
+  void mPressed() {
+    if(checkMouse()) {
+      if (mouseButton == LEFT) {
+        if (dist(mouseX, mouseY, mouseTrackX, mouseTrackY) < 2) {
           greyed[mouseOver] = greyed[mouseOver] ? false : true;
-        }
-        else
-        {
+        } else {
           selX1 = mouseX;
-          if (selX1 < plotX2)
-            selX2 = mouseX + 1;
-          else
-            selX2 = mouseX - 1;
+          selX2 = (selX1 < plotX2) ? mouseX + 1 : mouseX - 1;
           selMode = true;
         }
-      }
-      else if (mouseButton == RIGHT)
-      {
+      } else if (mouseButton == RIGHT) {
         selMode = false;
       }
     }
   }
   
-  void mDragged()
-  {
-    if(checkMouse())
-    {
-      if (selMode)
-      {
+  void mDragged() {
+    if(checkMouse()) {
+      if (selMode) {
         selX2 = mouseX;
-        if (mouseX <= plotX1)
-        {
+        if (mouseX <= plotX1) {
           selX2 = plotX1;
-        }
-        else if (mouseX >= plotX2)
-        {
+        } else if (mouseX >= plotX2) {
           selX2 = plotX2;
-        }       
+        }
       }
     }
   }
   
-  void mReleased()
-  {
-    if (mouseButton == LEFT)
-    {
-      if(selMode)
-      {
+  void mReleased() {
+    if (mouseButton == LEFT) {
+      if(selMode) {
         float setX1;
         float setX2;
-        if (selX1 < selX2)
-        {
+        if (selX1 < selX2) {
           setX1 = map(selX1, plotX1, plotX2, yearMin, yearMax);
           setX2 = map(selX2, plotX1, plotX2, yearMin, yearMax);
-        }
-        else
-        {
+        } else {
           setX1 = map(selX2, plotX1, plotX2, yearMin, yearMax);
           setX2 = map(selX1, plotX1, plotX2, yearMin, yearMax);
         }
@@ -344,30 +302,24 @@ class TimePlot
         selectMaxRow = int(setX2) - years[0];
         timeSelect.setRowRange(int(setX1) - years[0], int(setX2) - years[0]);
       }
-    }
-    else if (mouseButton == RIGHT)
-    {
+    } else if (mouseButton == RIGHT) {
       selectMinRow = yearMin;
       selectMaxRow = yearMax;
       timeSelect.setRowRange(0, chartData.getRowCount() - 1);
     }
   }
   
-  boolean checkMouse()
-  {
-    if((mouseX >= plotX1 && mouseX <= plotX2) && (mouseY > plotY1 && mouseY < plotY2))
-    {
+  boolean checkMouse() {
+    if((mouseX >= plotX1 && mouseX <= plotX2) && (mouseY > plotY1 && mouseY < plotY2)) {
       return true;
     }
     return false;
   }
   
-  color assignColour(int index)
-  {
+  color assignColour(int index) {
     color setColor = color(0);
     
-    switch (index)
-    {
+    switch (index) {
       case 0:
         setColor = color(0);
         break;
@@ -387,3 +339,4 @@ class TimePlot
     return setColor;
   }
 }
+

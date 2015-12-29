@@ -1,54 +1,52 @@
-class Selection
-{
-	int rowStart, rowEnd;
-	int yearStart, yearEnd;
-	float dataMin, dataMax;
+//********************************************************
+// Selection
+// Contains information about a selected set of data
+//********************************************************
 
-	FloatTable selData;
+class Selection {
+  int rowStart, rowEnd;
+  int yearStart, yearEnd;
+  float dataMin, dataMax;
 
-	Selection(FloatTable inputData)
-	{
-		selData = inputData;
+  FloatTable selData;
 
-		rowStart = 0;
-		rowEnd = selData.getRowCount() - 1;
+  Selection(FloatTable inputData) {
+    selData = inputData;
 
-		yearStart = selData.getRowName(rowStart);
-		yearEnd = selData.getRowName(rowEnd);
+    rowStart = 0;
+    rowEnd = selData.getRowCount() - 1;
 
-		dataMin = selData.getTableMin();
-		dataMax = selData.getTableMax();
-	}
+    yearStart = selData.getRowName(rowStart);
+    yearEnd = selData.getRowName(rowEnd);
 
-	int getRowStart()
-	{
-		return rowStart;
-	}
+    dataMin = selData.getTableMin();
+    dataMax = selData.getTableMax();
+  }
 
-	int getRowEnd()
-	{
-		return rowEnd;
-	}
+  int getRowStart() {
+    return rowStart;
+  }
 
-	void setRowRange(int start, int end)
-	{
-		rowStart = start;
-		rowEnd = end;
+  int getRowEnd() {
+    return rowEnd;
+  }
 
-		yearStart = selData.getRowName(rowStart);
-		yearEnd = selData.getRowName(rowEnd);
+  void setRowRange(int start, int end) {
+    rowStart = start;
+    rowEnd = end;
 
-		dataMin = selData.getTableMinRange(rowStart, rowEnd);
-		dataMax = selData.getTableMaxRange(rowStart, rowEnd);
-	}
+    yearStart = selData.getRowName(rowStart);
+    yearEnd = selData.getRowName(rowEnd);
 
-	int getYearStart()
-	{
-		return yearStart;
-	}
+    dataMin = selData.getTableMinRange(rowStart, rowEnd);
+    dataMax = selData.getTableMaxRange(rowStart, rowEnd);
+  }
 
-	int getYearEnd()
-	{
-		return yearEnd;
-	}
+  int getYearStart() {
+    return yearStart;
+  }
+
+  int getYearEnd() {
+    return yearEnd;
+  }
 }	

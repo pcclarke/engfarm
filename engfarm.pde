@@ -1,4 +1,4 @@
-/* @pjs font="EncodeSansCondensed-Regular.ttf, LibreCaslonText-Bold.ttf"; */
+/* @pjs font="/EncodeSansCondensed-Regular.ttf, /LibreCaslonText-Bold.ttf"; */
 
 int selectMinRow, selectMaxRow;
 
@@ -34,13 +34,10 @@ void setup()
   plots = new DataPlot[data.getColumnCount()];
   sparks = new SparkLine[data.getColumnCount()];
   
-  for(int i = 0; i < data.getColumnCount(); i++)
-  {
-    String[] matcher = match(grabNames[i], "Index");
-    if(matcher != null)
-    {
+  for(int i = 0; i < data.getColumnCount(); i++) {
+    if(match(grabNames[i], "Index") != null) {
       mainUsage[i] = true;
-    } 
+    }
     plots[i] = new DataPlot(data, mainSelection, i);
     sparks[i] = new SparkLine(25, 250 + i * 20, 425, 265 + i * 20, data, mainSelection, plots[i], i);
   }
@@ -48,21 +45,21 @@ void setup()
   overSparks = new SparkManager(25, 215, 425, 750, sparks);
   overSparks.setupOrder(data);
   
+  body20 = createFont("Encode Sans Condensed", 20);
+  gillDisplay = createFont("Libre Caslon Text", 50);
+  
   main = new TimePlot(25, 95, width, 145, data, mainSelection);
+  main.setFont(body20);
   main.setUsage(mainUsage);
   
   second = new IndexChart(400, 215, 1024, 768, data, mainSelection);
-  
-  body20 = createFont("Encode Sans Condensed", 20);
-  gillDisplay = createFont("Libre Caslon Text", 50);
   
   assignColour();
 
   smooth();
 }
 
-void draw()
-{
+void draw() {
   background(252, 249, 240);
   
   textAlign(LEFT, BOTTOM);
@@ -92,25 +89,19 @@ void draw()
   second.drawChart();
 }
 
-void mousePressed()
-{
+void mousePressed() {
   main.mPressed();
   second.mPressed();
   
-  if (overSparks.checkMouse())
-  {
-    for(int i = 0; i < data.getColumnCount(); i++)
-    {
+  if (overSparks.checkMouse()) {
+    for(int i = 0; i < data.getColumnCount(); i++) {
       if(sparks[i].checkToIndex()) {
         second.setUsage(i);
-      }
-      else if (sparks[i].checkTitle()) {
+      } else if (sparks[i].checkTitle()) {
         sparks[i].drag();
-      }
-      else if (sparks[i].checkLock()) {
+      } else if (sparks[i].checkLock()) {
         overSparks.lock();
-      }
-      else if (mouseButton == RIGHT) {
+      } else if (mouseButton == RIGHT) {
         overSparks.setupOrder(data);
       }
     }
@@ -121,27 +112,21 @@ void mouseMoved() {
   overSparks.mMoved();
 }
 
-void mouseDragged()
-{
+void mouseDragged() {
   main.mDragged();
   if(overSparks.checkMouse()) {
-    for(int i = 0; i < data.getColumnCount(); i++)
-    {
+    for(int i = 0; i < data.getColumnCount(); i++) {
       sparks[i].dragging(true);
     }
   } 
 }
 
-void mouseReleased()
-{
-  if (main.checkMouse())
-  {
+void mouseReleased() {
+  if (main.checkMouse()) {
     main.mReleased();
 
-    if(abs(selectMaxRow - selectMinRow) >= 1)
-    { 
-      for(int i = 0; i < data.getColumnCount(); i++)
-      {
+    if(abs(selectMaxRow - selectMinRow) >= 1) {
+      for(int i = 0; i < data.getColumnCount(); i++) {
         plots[i].update();
         sparks[i].update();
       }
@@ -149,12 +134,11 @@ void mouseReleased()
       overSparks.update();
     }
   }
-  if (overSparks.checkMouse())
-  {
+  
+  if (overSparks.checkMouse()) {
     int swap1 = -1;
     int swap2 = -1;
-    for(int i = 0; i < data.getColumnCount(); i++)
-    {
+    for(int i = 0; i < data.getColumnCount(); i++) {
       if (sparks[i].dragEnd()) {
         swap1 = i;
       }
@@ -169,15 +153,12 @@ void mouseReleased()
   }
 }
 
-void assignColour()
-{
+void assignColour() {
   color[] setColor = new color[data.getColumnCount()];
 
-  for (int i = 0; i < data.getColumnCount(); i++)
-  {
-    if (i < 4)
-    {
-      switch (i)
+  for (int i = 0; i < data.getColumnCount(); i++) {
+    if (i < 4) {
+      switch (i) 
       {
         case 0:
           setColor[i] = color(0);
@@ -195,19 +176,14 @@ void assignColour()
           setColor[i] = color(random(100, 225), random(100, 225), random(100, 225));
           break;
       }        
-    }
-    else
-    {
-      if(data.getIndex(i).equals("arable"))
-      {
+    } else {
+      if(data.getIndex(i).equals("arable")) {
         setColor[i] = color(random(150, 255), random(50, 150), random(50, 150));
       }
-      if(data.getIndex(i).equals("pasture"))
-      {
+      if(data.getIndex(i).equals("pasture")) {
         setColor[i] = color(random(50, 150), random(150, 255), random(50, 150));
       }
-      if(data.getIndex(i).equals("wood"))
-      {
+      if(data.getIndex(i).equals("wood")) {
         setColor[i] = color(random(50, 150), random(50, 150), random(150, 255));
       }
     }
@@ -215,3 +191,4 @@ void assignColour()
   }
   second.setColour(setColor);
 }
+

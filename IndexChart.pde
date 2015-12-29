@@ -1,5 +1,4 @@
-class IndexChart
-{
+class IndexChart {
   boolean[] usage;
   boolean[] greyed;
   boolean showDetail, selMode;
@@ -59,10 +58,8 @@ class IndexChart
        
     drawYearLabels();
     
-    for(int i = 0; i < chartData.getColumnCount(); i++)
-    {
-      if(usage[i])
-      {
+    for(int i = 0; i < chartData.getColumnCount(); i++) {
+      if(usage[i]) {
         drawDataCurve(i);
       }
     }
@@ -81,10 +78,8 @@ class IndexChart
     rect(x1 + 75, y1, x2 - 25, y2 - 50);
   }
   
-  void drawSelection(boolean selectionMode)
-  {
-    if(selectionMode)
-    {
+  void drawSelection(boolean selectionMode) {
+    if(selectionMode) {
       noStroke();
       fill(242, 255, 255);
       rect(selX1, plotY1, selX2, plotY2);
@@ -96,8 +91,7 @@ class IndexChart
     }
   }
   
-  void drawDataCurve(int col) 
-  {    
+  void drawDataCurve(int col) {    
     noFill();
     stroke(greyed[col] ? color(180) : plotColour[col]);
     strokeWeight(1);
@@ -105,35 +99,30 @@ class IndexChart
     
     float indexVal = chartData.getNextValidFloat(indexSelect.getRowStart(), col);
     
-    for (int row = indexSelect.getRowStart(); row <= indexSelect.getRowEnd(); row++) 
-    {
-      if (chartData.isValid(row, col)) 
-      {
+    for (int row = indexSelect.getRowStart(); row <= indexSelect.getRowEnd(); row++) {
+      if (chartData.isValid(row, col)) {
         float value = chartData.getFloat(row, col) / indexVal;        
         float x = map(years[row], indexSelect.getYearStart(), indexSelect.getYearEnd(), plotX1, plotX2);
         float y = map(value, indexMin, indexMax, plotY2, plotY1);     
         
         // Double the curve points for the end of a gap
-        if (!chartData.isValid(row - 1, col) && (row != indexSelect.getRowStart()))
-        {
+        if (!chartData.isValid(row - 1, col) && (row != indexSelect.getRowStart())) {
           beginShape();
-          
         }
         curveVertex(x, y);
+        
         // Double the curve points for the start and stop of plot
-        if ((row == indexSelect.getRowStart()) || (row == indexSelect.getRowEnd())) 
-        {
+        if ((row == indexSelect.getRowStart()) || (row == indexSelect.getRowEnd())) {
           curveVertex(x, y);
         }
+        
         // Double the curve points for start of a gap
-        if (!chartData.isValid(row + 1, col) && (row != indexSelect.getRowEnd()))
-        {
+        if (!chartData.isValid(row + 1, col) && (row != indexSelect.getRowEnd())) {
           curveVertex(x, y);
           endShape();
         }
         
-        if (dist(mouseX, mouseY, x, y) < 5  && !showDetail) 
-        { 
+        if (dist(mouseX, mouseY, x, y) < 5  && !showDetail) {
           showDetail = true;
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
@@ -145,8 +134,7 @@ class IndexChart
     endShape();
   }
  
-  void drawTicks() 
-  {
+  void drawTicks() {
     fill(0);
     textFont(body20);
     textSize(10);
@@ -156,21 +144,14 @@ class IndexChart
     stroke(128);
     strokeWeight(1);  
     
-    for (float v = 1; v <= indexMax; v += tickInterval) 
-    {
+    for (float v = 1; v <= indexMax; v += tickInterval) {
       float y = map(v, indexMin, indexMax, plotY2, plotY1);
-      if (v % tickInterval == 0) 
-      { // If a major tick mark
-        if (v == indexMin) 
-        {
-          textAlign(RIGHT); // ALign by the bottom
-        } 
-        else if (v == indexMax) 
-        {
+      if (v % tickInterval == 0) { // If a major tick mark
+        if (v == indexMin) {
+          textAlign(RIGHT); // Align by the bottom
+        } else if (v == indexMax) {
           textAlign(RIGHT, TOP); // Align by the top
-        } 
-        else 
-        {
+        } else {
           textAlign(RIGHT, CENTER); // Center vertically
         }
         text(nf((v - 1) * 100, 0, 0) + "%", plotX1 - 10, y);
@@ -192,10 +173,8 @@ class IndexChart
     stroke(224);
     strokeWeight(1);
     
-    for (int row = indexSelect.getYearStart(); row <= indexSelect.getYearEnd(); row++) 
-    {
-      if ((row % yearInterval) == 0)
-      {
+    for (int row = indexSelect.getYearStart(); row <= indexSelect.getYearEnd(); row++) {
+      if ((row % yearInterval) == 0) {
         float x = map(row, indexSelect.getYearStart(), indexSelect.getYearEnd(), plotX1, plotX2);
         pushMatrix();
         translate(x - 20, y2 - 30);
@@ -207,14 +186,10 @@ class IndexChart
     }
   }
   
-  void setUsage(int index)
-  {
-    if(usage[index])
-    {
+  void setUsage(int index) {
+    if(usage[index]) {
       usage[index] = false;
-    }
-    else
-    {
+    } else {
       usage[index] = true;
     }
     
@@ -223,52 +198,39 @@ class IndexChart
     update();
   }
   
-  void mPressed()
-  {
-    if(checkMouse())
-    {
-      if (mouseButton == LEFT)
-      {
-        if (dist(mouseX, mouseY, mouseTrackX, mouseTrackY) < 2)
-        {
+  void mPressed() {
+    if(checkMouse()) {
+      if (mouseButton == LEFT) {
+        if (dist(mouseX, mouseY, mouseTrackX, mouseTrackY) < 2) {
           greyed[mouseOver] = greyed[mouseOver] ? false : true;
-        }
-        else
-        {
+        } else {
           selX1 = mouseX;
-          if (selX1 < plotX2)
+          if (selX1 < plotX2) {
             selX2 = mouseX + 1;
-          else
+          } else {
             selX2 = mouseX - 1;
+          }
           selMode = true;
         }
       }
     }
   }
   
-  void mDragged()
-  {
-    if(checkMouse())
-    {
-      if (selMode)
-      {
+  void mDragged() {
+    if(checkMouse()) {
+      if (selMode) {
         selX2 = mouseX;
-        if (mouseX <= plotX1)
-        {
+        if (mouseX <= plotX1) {
           selX2 = plotX1;
-        }
-        else if (mouseX >= plotX2)
-        {
+        } else if (mouseX >= plotX2) {
           selX2 = plotX2;
-        }       
+        }
       }
     }
   }
   
-  boolean checkMouse()
-  {
-    if((mouseX >= plotX1 && mouseX <= plotX2) && (mouseY > plotY1 && mouseY < plotY2))
-    {
+  boolean checkMouse() {
+    if((mouseX >= plotX1 && mouseX <= plotX2) && (mouseY > plotY1 && mouseY < plotY2)) {
       return true;
     }
     return false;
@@ -278,8 +240,7 @@ class IndexChart
     plotColour = inputColour;
   }
   
-  void update()
-  { 
+  void update() { 
     int minRow;
     int maxRow;
     
@@ -292,32 +253,23 @@ class IndexChart
     indexMin = 200;
     indexMax = -200;
     
-    for (int i = 0; i < chartData.getColumnCount(); i++)
-    {
-      if(chartData.isValidRange(indexSelect.getRowStart(), indexSelect.getRowEnd(), i))
-      {
-        if(usage[i])
-        {
+    for (int i = 0; i < chartData.getColumnCount(); i++) {
+      if(chartData.isValidRange(indexSelect.getRowStart(), indexSelect.getRowEnd(), i)) {
+        if(usage[i]) {
           minRow = chartData.getColumnMinRange(i, indexSelect.getRowStart(), indexSelect.getRowEnd());
           maxRow = chartData.getColumnMaxRange(i, indexSelect.getRowStart(), indexSelect.getRowEnd());
 
-          if (dataMin > chartData.getFloat(minRow, i))
-          {
+          if (dataMin > chartData.getFloat(minRow, i)) {
             dataMin = chartData.getFloat(minRow, i);
           }
-          if (dataMax < chartData.getFloat(maxRow, i))
-          {
+          if (dataMax < chartData.getFloat(maxRow, i)) {
             dataMax = chartData.getFloat(maxRow, i);
-          }   
-         
-          
+          }
       
-          if (indexMin > chartData.getNextValidFloat(minRow, i) / chartData.getNextValidFloat(indexSelect.getRowStart(), i))
-          {
+          if (indexMin > chartData.getNextValidFloat(minRow, i) / chartData.getNextValidFloat(indexSelect.getRowStart(), i)) {
             indexMin = chartData.getNextValidFloat(minRow, i) / chartData.getNextValidFloat(indexSelect.getRowStart(), i);
           }
-          if (indexMax < chartData.getNextValidFloat(maxRow, i) / chartData.getNextValidFloat(indexSelect.getRowStart(), i))
-          {
+          if (indexMax < chartData.getNextValidFloat(maxRow, i) / chartData.getNextValidFloat(indexSelect.getRowStart(), i)) {
             indexMax = chartData.getNextValidFloat(maxRow, i) / chartData.getNextValidFloat(indexSelect.getRowStart(), i);
           }
         }

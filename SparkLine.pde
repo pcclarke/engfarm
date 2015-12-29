@@ -2,8 +2,8 @@
 // SparkLine
 // Draws the individual sparklines along the left
 //************************************************
-class SparkLine
-{
+
+class SparkLine {
   boolean showDetail, dragged, mDragging, isZoomed;
   color plotColour;
   color bg, normal;
@@ -75,15 +75,13 @@ class SparkLine
     lock.setShape('l');
   }
   
-  void drawSparkLine()
-  {
+  void drawSparkLine() {
     showDetail = false;
     
     textFont(body20);
     textSize(10);
 
-    if(mDragging && checkMouse())
-    {
+    if(mDragging && checkMouse()) {
       noStroke();
       fill(bg);
       rect(x1, y1, x2, y2);
@@ -93,17 +91,13 @@ class SparkLine
     fill(0);
     text(sparkData.getUnit(column), x1 + (.8 * (x2 - x1)), (.55 * (plotY2 - plotY1)) + plotY1);
     
-    if (sparkPlot.getValid())
-    {
+    if (sparkPlot.getValid()) {
       textAlign(RIGHT);
       fill(0, 153, 255);
-      //if(!Float.isNaN(dataMin))
-      if (!(dataMin < 0))
-      {
+      if (!(dataMin < 0)) {
         text(nf(dataMin, 0, 2), x1 + (.65 * (x2 - x1)), (.55 * (plotY2 - plotY1)) + plotY1);
       }
       fill(255, 0, 0);
-      //if(!Float.isNaN(dataMax))
       if (!(dataMin < 0))
       {
         text(nf(dataMax, 0, 2), x1 + (.75 * (x2 - x1)), (.55 * (plotY2 - plotY1)) + plotY1);
@@ -147,20 +141,16 @@ class SparkLine
 
       rectMode(CORNERS);
       noStroke();
-      if ((q1Plot < plotY2) && (q1Plot > plotY1) && (q3Plot > plotY1) && (q3Plot < plotY2))
-      {
+      if ((q1Plot < plotY2) && (q1Plot > plotY1) && (q3Plot > plotY1) && (q3Plot < plotY2)) {
         fill(225);
         rect(plotX1, q1Plot, plotX2, q3Plot);
-      }
-      else if ((q1Plot < plotY2) && (q1Plot > plotY1) && !((q3Plot > plotY1) && (q3Plot < plotY2))) {
+      } else if ((q1Plot < plotY2) && (q1Plot > plotY1) && !((q3Plot > plotY1) && (q3Plot < plotY2))) {
         fill(225);
         rect(plotX1, q1Plot, plotX2, plotY1);        
-      }
-      else if (!((q1Plot < plotY2) && (q1Plot > plotY1)) && (q3Plot > plotY1) && (q3Plot < plotY2)) {
+      } else if (!((q1Plot < plotY2) && (q1Plot > plotY1)) && (q3Plot > plotY1) && (q3Plot < plotY2)) {
         fill(225);
         rect(plotX1, plotY2, plotX2, q3Plot);             
-      }
-      else if ((q1Plot >= plotY2) && (q3Plot <= plotY1)) {
+      } else if ((q1Plot >= plotY2) && (q3Plot <= plotY1)) {
         fill(225);
         rect(plotX1, plotY2, plotX2, plotY1);     
       }
@@ -171,8 +161,6 @@ class SparkLine
         strokeWeight(1);
         line(plotX1, medLine, plotX2, medLine);
       }
-
-      //println("column: " + column + " plotY2: " + plotY2 + " median: " + median);
 
       drawDataLine(column);
 
@@ -186,39 +174,32 @@ class SparkLine
         lock.setPos(x2, (y2 - y1) * .5 + y1);
         lock.draw();
       }
-
     }
 
     title.draw();
     if (dragged) {
       title.setPos(mouseX, mouseY, mouseX + 80, mouseY + (y2 - y1));
       title.setState(true);
-    }
-    else {
+    } else {
       title.setPos(x1, y1, x1 + 90, y2);  
     }
 
-    if(showDetail)
-    {
+    if(showDetail) {
       detail.drawHover();
     }
   }
   
-  void drawDataLine(int col) 
-  {    
+  void drawDataLine(int col) {    
     noFill();
     stroke(0);
     strokeWeight(.5);
     beginShape();
-    for (int row = sparkSelect.getRowStart(); row <= sparkSelect.getRowEnd(); row++) 
-    {
-      if (sparkData.isValid(row, col)) 
-      {
+    for (int row = sparkSelect.getRowStart(); row <= sparkSelect.getRowEnd(); row++) {
+      if (sparkData.isValid(row, col)) {
         float value = sparkData.getFloat(row, col);
         float x = map(years[row], sparkSelect.getYearStart(), sparkSelect.getYearEnd(), plotX1, plotX2);
         float y = map(value, dataMin, dataMax, plotY2, plotY1);       
-        if (!sparkData.isValid(row - 1, col))
-        {
+        if (!sparkData.isValid(row - 1, col)) {
           vertex(x, y);
           vertex(x, y);
           endShape(); 
@@ -232,13 +213,11 @@ class SparkLine
         }
         vertex(x, y);
         // Double the curve points for the start and stop
-        if ((row == sparkSelect.getRowStart()) || (row == sparkSelect.getRowEnd())) 
-        {
+        if ((row == sparkSelect.getRowStart()) || (row == sparkSelect.getRowEnd())) {
           vertex(x, y);
         }
         //
-        if (dist(mouseX, mouseY, x, y) < 5  && !showDetail) 
-        { 
+        if (dist(mouseX, mouseY, x, y) < 5  && !showDetail) { 
           showDetail = true;
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
@@ -247,8 +226,7 @@ class SparkLine
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey
-      else if (!sparkData.isValid(row, col) && sparkData.isValid(row - 1, col) && years[row - 1] >= sparkSelect.getYearStart())
-      {
+      else if (!sparkData.isValid(row, col) && sparkData.isValid(row - 1, col) && years[row - 1] >= sparkSelect.getYearStart()) {
         float value = sparkData.getFloat(row - 1, col);
         float x = map(years[row - 1], sparkSelect.getYearStart(), sparkSelect.getYearEnd(), plotX1, plotX2);
         float y = map(value, dataMin, dataMax, plotY2, plotY1);  
@@ -266,8 +244,7 @@ class SparkLine
     endShape();
   }
   
-  void drawDataMax()
-  {
+  void drawDataMax() {
     float x = map(dataMaxYear, sparkSelect.getYearStart(), sparkSelect.getYearEnd(), plotX1, plotX2);
     float y = map(dataMax, dataMin, dataMax, plotY2, plotY1);  
     
@@ -276,8 +253,7 @@ class SparkLine
     point(x, y);
   }
   
-  void drawDataMin()
-  {
+  void drawDataMin() {
     float x = map(dataMinYear, sparkSelect.getYearStart(), sparkSelect.getYearEnd(), plotX1, plotX2);
     float y = map(dataMin, dataMin, dataMax, plotY2, plotY1);  
     
@@ -314,11 +290,9 @@ class SparkLine
     }
   }
   
-  boolean checkMouse()
-  {
+  boolean checkMouse() {
     checkTitle();
-    if((mouseX >= x1 && mouseX <= x2) && (mouseY > y1 && mouseY < y2))
-    {
+    if((mouseX >= x1 && mouseX <= x2) && (mouseY > y1 && mouseY < y2)) {
       return true;
     }
     return false;
@@ -360,8 +334,7 @@ class SparkLine
     return dragged;
   }
 
-  boolean dragEnd()
-  {
+  boolean dragEnd() {
     if (dragged) {
       dragged = false;
       title.setState(false);

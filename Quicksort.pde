@@ -1,12 +1,16 @@
+//****************************************************************************************************************************************
+// Quicksort
+// Lifted from here: http://www.vogella.com/tutorials/JavaAlgorithmsQuicksort/article.html
+// Because if I wasn't writing for Processing.js I'd just use Arrays.sort()
+//****************************************************************************************************************************************
+
 public class Quicksort  {
   private float[] numbers;
   private int number;
   private float pivot;
 
-  Quicksort()
-  {
-
-  }
+  Quicksort() { }
+  
   public void sort(float[] values) {
     // Check for empty or null array
     if (values == null || values.length==0){

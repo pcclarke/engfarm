@@ -1,6 +1,8 @@
-//**********************************
-//ROUND BUTTON
-//**********************************
+//*********************************************
+// RoundButton
+// Draws a round button that can be toggled
+//*********************************************
+
 class RoundButton {
   boolean selected;
   char shape;

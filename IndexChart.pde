@@ -1,3 +1,8 @@
+//********************************************************************
+// IndexChart
+// Draws a line chart that can be updated with different selections
+//********************************************************************
+
 class IndexChart {
   boolean[] usage;
   boolean[] greyed;

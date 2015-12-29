@@ -1,3 +1,9 @@
+//****************************************************************
+// FloatTable
+// Lifted from "Visualizing Data" by Ben Fry
+// Because there's no Table class in Processing.js, sigh...
+//****************************************************************
+
 class FloatTable {
   int rowCount;
   int columnCount;
@@ -26,12 +32,10 @@ class FloatTable {
 
     // start reading at row 1, because the first row was only the column headers
     for (int i = 3; i < rows.length; i++) {
-      if (trim(rows[i]).length() == 0) 
-      {
+      if (trim(rows[i]).length() == 0) {
         continue; // skip empty rows
       }
-      if (rows[i].startsWith("#")) 
-      {
+      if (rows[i].startsWith("#")) {
         continue;  // skip comment lines
       }
 
@@ -65,22 +69,17 @@ class FloatTable {
     }
   }
   
-  
-  int getRowCount() 
-  {
+  int getRowCount() {
     return rowCount;
   }
-  
   
   int getRowName(int rowIndex) {
     return rowNames[rowIndex];
   }
   
-  
   int[] getRowNames() {
     return rowNames;
   }
-
   
   // Find a row by its name, returns -1 if no row found. 
   // This will return the index of the first row with this name.
@@ -161,7 +160,6 @@ class FloatTable {
     if (col >= data[row].length) return false;
     if (col < 0) return false;
     return !(data[row][col] < 0);
-    //return !Float.isNaN(data[row][col]);
   }
 
   boolean isValidRange(int rowMin, int rowMax, int col)
@@ -195,7 +193,7 @@ class FloatTable {
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (/*!Float.isNaN(data[i][col]) &&*/ data[i][col] > 0) {
+        if (data[i][col] > 0) {
           fullCol[goodCount] = data[i][col];
           goodCount++;
         }
@@ -217,7 +215,7 @@ class FloatTable {
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (/*!Float.isNaN(data[i][col]) &&*/ data[i][col] > 0) {
+        if (data[i][col] > 0) {
           fullCol[goodCount] = data[i][col];
           goodCount++;
         }
@@ -239,7 +237,7 @@ class FloatTable {
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (/*!Float.isNaN(data[i][col]) &&*/ data[i][col] > 0) {
+        if (data[i][col] > 0) {
           fullCol[goodCount] = data[i][col];
           goodCount++;
         }
@@ -254,12 +252,10 @@ class FloatTable {
     return med;
   }
   
-  float getColumnMin(int col) 
-  {
-    //float m = Float.MAX_VALUE;
-    float m = 200;
+  float getColumnMin(int col) {
+    float m = bigFloat;
     for (int i = 0; i < rowCount; i++) {
-      if (/*!Float.isNaN(data[i][col]) &&*/ isValid(i, col)) {
+      if (isValid(i, col)) {
         if (data[i][col] < m) {
           m = data[i][col];
         }
@@ -269,8 +265,7 @@ class FloatTable {
   }
   
   float getColumnMax(int col) {
-    //float m = -Float.MAX_VALUE;
-    float m = -200;
+    float m = -bigFloat;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
         if (data[i][col] > m) {
@@ -281,31 +276,22 @@ class FloatTable {
     return m;
   }
   
-  int getColumnMinRange(int col, int min, int max) 
-  {
-    //float m = Float.MAX_VALUE;
-    float m = 200;
+  int getColumnMinRange(int col, int min, int max) {
+    float m = bigFloat;
     int minRow = 0;
-    for (int i = min; i <= max; i++) 
-    {
-      if (isValid(i, col)) 
-      {
-        //if (!Float.isNaN(data[i][col])) {
-          if (data[i][col] < m) 
-          {
-            m = data[i][col];
-            minRow = i;
-          }
-        //}
+    for (int i = min; i <= max; i++) {
+      if (isValid(i, col)) {
+        if (data[i][col] < m) {
+          m = data[i][col];
+          minRow = i;
+        }
       }
     }
     return minRow;
   }
   
-  int getColumnMaxRange(int col, int min, int max) 
-  {
-    //float m = -Float.MAX_VALUE;
-    float m = -200;
+  int getColumnMaxRange(int col, int min, int max) {
+    float m = -bigFloat;
     int maxRow = 1;
     for (int i = min; i <= max; i++) 
     {
@@ -321,8 +307,7 @@ class FloatTable {
 
   
   float getRowMin(int row) {
-    //float m = Float.MAX_VALUE;
-    float m = 200;
+    float m = bigFloat;
     for (int i = 0; i < columnCount; i++) {
       if (isValid(row, i)) {
         if (data[row][i] < m) {
@@ -335,8 +320,7 @@ class FloatTable {
 
   
   float getRowMax(int row) {
-    //float m = -Float.MAX_VALUE;
-    float m = -200;
+    float m = -bigFloat;
     for (int i = 1; i < columnCount; i++) {
       //if (!Float.isNaN(data[row][i])) {
         if (data[row][i] > m) {
@@ -349,8 +333,7 @@ class FloatTable {
   
   
   float getTableMin() {
-    //float m = Float.MAX_VALUE;
-    float m = 200;
+    float m = bigFloat;
     for (int i = 0; i < rowCount; i++) {
       for (int j = 0; j < columnCount; j++) {
         if (isValid(i, j)) {
@@ -364,8 +347,7 @@ class FloatTable {
   }
   
   float getTableMinRange(int min, int max) {
-    //float m = Float.MAX_VALUE;
-    float m = 200;
+    float m = bigFloat;
     for (int i = min; i < max; i++) {
       for (int j = 0; j < columnCount; j++) {
         if (isValid(i, j)) {
@@ -380,16 +362,11 @@ class FloatTable {
 
   
   float getTableMax() {
-    //float m = -Float.MAX_VALUE;
-    float m = -200;
-    for (int i = 0; i < rowCount; i++) 
-    {
-      for (int j = 0; j < columnCount; j++) 
-      {
-        if (isValid(i, j)) 
-        {
-          if (data[i][j] > m) 
-          {
+    float m = -bigFloat;
+    for (int i = 0; i < rowCount; i++) {
+      for (int j = 0; j < columnCount; j++) {
+        if (isValid(i, j)) {
+          if (data[i][j] > m) {
             m = data[i][j];
           }
         }
@@ -399,16 +376,11 @@ class FloatTable {
   }
   
   float getTableMaxRange(int min, int max) {
-    //float m = -Float.MAX_VALUE;
-    float m = -200;
-    for (int i = min; i < max; i++) 
-    {
-      for (int j = 0; j < columnCount; j++) 
-      {
-        if (isValid(i, j)) 
-        {
-          if (data[i][j] > m) 
-          {
+    float m = -bigFloat;
+    for (int i = min; i < max; i++) {
+      for (int j = 0; j < columnCount; j++) {
+        if (isValid(i, j)) {
+          if (data[i][j] > m) {
             m = data[i][j];
           }
         }

@@ -1,6 +1,7 @@
 /* @pjs font="/EncodeSansCondensed-Regular.ttf, /LibreCaslonText-Bold.ttf"; */
-
+    
 int selectMinRow, selectMaxRow;
+float bigFloat = 1000000; // poor substitute for not being able to use Float.MAX_VALUE
 
 DataPlot[] plots;
 TimePlot main;
@@ -15,12 +16,7 @@ PFont body20, gillDisplay;
 void setup()
 {
   size(1024, 768);
-   
-  /* http://faculty.econ.ucdavis.edu/faculty/gclark/data.html
-  * Prices of 22 domestic farm products, 1500-1914 wheat, barley, oats, rye, peas, beans, 
-  * potatoes, hops, straw, hay, beef, mutton, pork, bacon, tallow, milk, cheese, butter, wool, 
-  * eggs, faggots (firewood), timber
-  */
+
   data = new FloatTable("farm2002.csv");
 
   mainSelection = new Selection(data);

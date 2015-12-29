@@ -1,5 +1,6 @@
 //**********************************
-//Button Class - This makes Buttons!
+// Button Class
+// Draws a square button
 //**********************************
 
 class Button {
@@ -33,6 +34,7 @@ class Button {
     align = 'c';
   }
   
+  // Set the position of the button's 4 corners
   void setPos(float inputx1, float inputy1, float inputx2, float inputy2) {
     x1 = min(inputx1, inputx2);
     y1 = min(inputy1, inputy2);
@@ -40,18 +42,22 @@ class Button {
     y2 = max(inputy1, inputy2);
   }
 
+  // Set the alignment of text to the left 'l', center 'c', or right 'r'
   void setAlign(char ali) {
     align = ali;
   }
   
+  // Set whether the button displays as selected or not
   void setState (boolean inputSelected) {
     selected = inputSelected;
   }
   
+  // Set the deselected fill colour of the button
   void setFillOffColour(color inputColour) {
     fillOffColour = inputColour;
   }
 
+  // Check whether the mouse cursor is in the area of the button
   boolean checkMouse() {
     if ((mouseX < x2) && (mouseX > x1) && (mouseY < y2) && (mouseY > y1)) {
       showBorder = true;
@@ -61,6 +67,7 @@ class Button {
       return false;
     }
   }
+  
   
   boolean getState() {
     return selected;

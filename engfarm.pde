@@ -3,6 +3,8 @@
 int selectMinRow, selectMaxRow;
 float bigFloat = 1000000; // poor substitute for not being able to use Float.MAX_VALUE
 
+PFont bodyFont, headerFont, displayFont;
+
 DataPlot[] plots;
 TimePlot main;
 FloatTable data;
@@ -10,8 +12,6 @@ Selection mainSelection;
 SparkLine[] sparks;
 SparkManager overSparks;
 IndexChart second;
-
-PFont bodyFont, displayFont;
 
 void setup()
 {
@@ -43,8 +43,9 @@ void setup()
   
 //  bodyFont = createFont("Encode Sans Condensed", 20);
 //  displayFont = createFont("Libre Caslon Text", 50);
-  bodyFont = createFont("EncodeSansCondensed-Regular.ttf", 20);
-  displayFont = createFont("LibreCaslonText-Bold.ttf", 50);
+  bodyFont = createFont("EncodeSansCondensed-Regular.ttf", 12);
+  headerFont = createFont("LibreCaslonText-Bold.ttf", 16);
+  displayFont = createFont("LibreCaslonText-Bold.ttf", 50.5);
   
   main = new TimePlot(25, 95, width, 145, data, mainSelection);
   main.setFont(bodyFont);
@@ -65,7 +66,7 @@ void draw() {
   textFont(displayFont);
   //fill(119, 118, 112);
   fill(100);
-  textSize(50);
+  textSize(50.5);
   text("English Agricultural Prices 1500\u20131914", 25, 60);
 
   fill(50);
@@ -74,7 +75,7 @@ void draw() {
   text("low", 267, 205);
   text("high", 307, 205);
 
-  textFont(displayFont);
+  textFont(headerFont);
   fill(100);
   textSize(16);
   text("Price Indices", 25, 90);

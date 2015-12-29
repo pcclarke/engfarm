@@ -21,6 +21,8 @@ class IndexChart {
   int tickInterval = 1;
   int selYear1, selYear2;
   
+  PFont font;
+  
   FloatTable chartData;
   HoverBox detail;
   Selection indexSelect;
@@ -40,6 +42,7 @@ class IndexChart {
     
     background = color(255);
     plotColour = new color[chartData.getColumnCount()];
+    this.font = createFont("Arial", 20);
     
     usage = new boolean[chartData.getColumnCount()];
     
@@ -132,7 +135,7 @@ class IndexChart {
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col), body20);
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col), font);
         }
       }
     }
@@ -141,7 +144,7 @@ class IndexChart {
  
   void drawTicks() {
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(10);
     textAlign(RIGHT, CENTER);
     
@@ -170,7 +173,7 @@ class IndexChart {
   void drawYearLabels() 
   {
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(10);
     textAlign(CENTER, TOP);
     
@@ -189,6 +192,10 @@ class IndexChart {
         line(x, y1, x, y2 - 50);
       }
     }
+  }
+  
+  void setFont(PFont font) {
+    this.font = font;
   }
   
   void setUsage(int index) {

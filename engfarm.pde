@@ -11,7 +11,7 @@ SparkLine[] sparks;
 SparkManager overSparks;
 IndexChart second;
 
-PFont body20, gillDisplay;
+PFont bodyFont, displayFont;
 
 void setup()
 {
@@ -41,14 +41,17 @@ void setup()
   overSparks = new SparkManager(25, 215, 425, 750, sparks);
   overSparks.setupOrder(data);
   
-  body20 = createFont("Encode Sans Condensed", 20);
-  gillDisplay = createFont("Libre Caslon Text", 50);
+//  bodyFont = createFont("Encode Sans Condensed", 20);
+//  displayFont = createFont("Libre Caslon Text", 50);
+  bodyFont = createFont("EncodeSansCondensed-Regular.ttf", 20);
+  displayFont = createFont("LibreCaslonText-Bold.ttf", 50);
   
   main = new TimePlot(25, 95, width, 145, data, mainSelection);
-  main.setFont(body20);
+  main.setFont(bodyFont);
   main.setUsage(mainUsage);
   
   second = new IndexChart(400, 215, 1024, 768, data, mainSelection);
+  second.setFont(bodyFont);
   
   assignColour();
 
@@ -59,19 +62,19 @@ void draw() {
   background(252, 249, 240);
   
   textAlign(LEFT, BOTTOM);
-  textFont(gillDisplay);
+  textFont(displayFont);
   //fill(119, 118, 112);
   fill(100);
-  textSize(48);
+  textSize(50);
   text("English Agricultural Prices 1500\u20131914", 25, 60);
 
   fill(50);
-  textFont(body20);
+  textFont(bodyFont);
   textSize(10);
   text("low", 267, 205);
   text("high", 307, 205);
 
-  textFont(gillDisplay);
+  textFont(displayFont);
   fill(100);
   textSize(16);
   text("Price Indices", 25, 90);

@@ -170,8 +170,7 @@ class IndexChart {
     }
   }
   
-  void drawYearLabels() 
-  {
+  void drawYearLabels() {
     fill(0);
     textFont(font);
     textSize(10);
@@ -208,37 +207,6 @@ class IndexChart {
     greyed = new boolean[usage.length];
     
     update();
-  }
-  
-  void mPressed() {
-    if(checkMouse()) {
-      if (mouseButton == LEFT) {
-        if (dist(mouseX, mouseY, mouseTrackX, mouseTrackY) < 2) {
-          greyed[mouseOver] = greyed[mouseOver] ? false : true;
-        } else {
-          selX1 = mouseX;
-          if (selX1 < plotX2) {
-            selX2 = mouseX + 1;
-          } else {
-            selX2 = mouseX - 1;
-          }
-          selMode = true;
-        }
-      }
-    }
-  }
-  
-  void mDragged() {
-    if(checkMouse()) {
-      if (selMode) {
-        selX2 = mouseX;
-        if (mouseX <= plotX1) {
-          selX2 = plotX1;
-        } else if (mouseX >= plotX2) {
-          selX2 = plotX2;
-        }
-      }
-    }
   }
   
   boolean checkMouse() {

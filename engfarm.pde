@@ -91,7 +91,6 @@ void draw() {
 
 void mousePressed() {
   main.mPressed();
-  second.mPressed();
   
   if (overSparks.checkMouse()) {
     for(int i = 0; i < data.getColumnCount(); i++) {

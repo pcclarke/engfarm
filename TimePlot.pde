@@ -46,7 +46,7 @@ class TimePlot {
     
     background = color(255);
     plotColour = new color[chartData.getColumnCount()];
-    this.font = createFont("Arial", 20);
+    this.font = createFont("Arial", 12);
     
     rowCount = chartData.getRowCount();
     years = chartData.getRowNames();
@@ -164,7 +164,8 @@ class TimePlot {
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value, font);
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value);
+          detail.setFont(font);
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey

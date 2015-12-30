@@ -19,6 +19,8 @@ class SparkLine {
   int yearInterval = 50;
   int tickInterval = 25;
   
+  PFont font, hoverFont;
+  
   Button title;
   DataPlot sparkPlot;
   FloatTable sparkData;
@@ -40,6 +42,9 @@ class SparkLine {
     sparkPlot = inputPlot;
     sparkSelect = inputSelect;
     column = inputColumn;
+    
+    this.font = createFont("Arial", 10);
+    this.hoverFont = createFont("Arial", 12);
     
     bg = color(240);
     normal = color(230);
@@ -78,7 +83,7 @@ class SparkLine {
   void drawSparkLine() {
     showDetail = false;
     
-    textFont(bodyFont);
+    textFont(font);
     textSize(10);
 
     if(mDragging && checkMouse()) {
@@ -222,7 +227,8 @@ class SparkLine {
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, sparkData.getColumnName(col) + " " + years[row] + ": " + value, bodyFont);
+          detail = new HoverBox(x, y, sparkData.getColumnName(col) + " " + years[row] + ": " + value);
+          detail.setFont(hoverFont);
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey
@@ -264,7 +270,7 @@ class SparkLine {
  
   void drawTicks() {
     fill(0);
-    textFont(bodyFont);
+    textFont(font);
     textSize(10);
     textAlign(RIGHT, CENTER);
     
@@ -362,5 +368,13 @@ class SparkLine {
   void setColour(color inputColour) {
     plotColour = inputColour;
     toIndexChart.setFillOffColour(plotColour);
+  }
+  
+  void setFont(PFont font) {
+    this.font = font;
+  }
+  
+  void setHoverFont(PFont font) {
+    this.hoverFont = font;
   }
 }

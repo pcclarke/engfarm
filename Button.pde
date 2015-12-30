@@ -13,6 +13,8 @@ class Button {
   color borderColour;
   boolean selected;
   boolean showBorder, hasSub;
+  
+  PFont font;
 
   Button (float inputX1, float inputY1, float inputX2, float inputY2, String inputName, int inputCategory) {
     x1 = min(inputX1, inputX2);
@@ -21,6 +23,8 @@ class Button {
     y2 = max(inputY1, inputY2);
     name = inputName;
     category = inputCategory;
+    
+    this.font = createFont("Arial", 10);
 
     fillOffColour = color(252, 249, 240);
     fillOnColour = color(240);
@@ -40,6 +44,10 @@ class Button {
     y1 = min(inputy1, inputy2);
     x2 = max(inputx1, inputx2);
     y2 = max(inputy1, inputy2);
+  }
+  
+  void setFont(PFont font) {
+    this.font = font;
   }
 
   // Set the alignment of text to the left 'l', center 'c', or right 'r'

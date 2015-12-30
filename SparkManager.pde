@@ -136,9 +136,7 @@ class SparkManager {
       float yNext = y1;
       for (int i = 0; i < managedSparks.length; i++) {
         if (bifocal) {
-	  if((i == zoomCenter) || (i + 1 == zoomCenter) || (i - 1 == zoomCenter)
-	                       || (i + 2 == zoomCenter) || (i - 2 == zoomCenter)
-	                       || (i + 3 == zoomCenter) || (i - 3 == zoomCenter)) {
+          if (zoomCenter >= i - 3 && zoomCenter <= i + 3) { 
 	    managedSparks[sparkOrder[i]].setY(yNext, yNext + floor(heightBig * .75));		
             yNext = yNext + heightBig;
 	  } else {

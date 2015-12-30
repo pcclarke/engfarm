@@ -5,18 +5,18 @@
 
 class HoverBox {
   float x, y, w, h;
-  PFont font;
   String hoverText;
   
-  HoverBox (float inputX, float inputY, String inputText, PFont font) {
+  PFont font;
+  
+  HoverBox (float inputX, float inputY, String inputText) {
     x = inputX;
     y = inputY;
     hoverText = inputText;
+    this.font = createFont("Arial", 12);
     
     w = 6 * hoverText.length();
     h = 15;
-    
-    this.font = font;
   }
   
   void drawHover() {
@@ -50,5 +50,9 @@ class HoverBox {
     textSize(12);
     textAlign(CENTER);
     text(hoverText, xPos, yPos);
+  }
+  
+  void setFont(PFont font) {
+    this.font = font;
   }
 }

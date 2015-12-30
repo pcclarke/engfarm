@@ -3,7 +3,7 @@
 int selectMinRow, selectMaxRow;
 float bigFloat = 1000000; // poor substitute for not being able to use Float.MAX_VALUE
 
-PFont bodyFont, headerFont, displayFont;
+PFont smallFont, bodyFont, headerFont, displayFont;
 
 DataPlot[] plots;
 TimePlot main;
@@ -18,6 +18,15 @@ void setup()
   size(1024, 768);
 
   data = new FloatTable("farm2002.csv");
+  
+  smallFont = createFont("Encode Sans Condensed", 10);
+  bodyFont = createFont("Encode Sans Condensed", 12);
+  headerFont = createFont("Libre Caslon Text", 50.5);
+  displayFont = createFont("Libre Caslon Text", 50.5);
+//  smallFont = createFont("EncodeSansCondensed-Regular.ttf", 10);
+//  bodyFont = createFont("EncodeSansCondensed-Regular.ttf", 12);
+//  headerFont = createFont("LibreCaslonText-Bold.ttf", 16);
+//  displayFont = createFont("LibreCaslonText-Bold.ttf", 50.5);
 
   mainSelection = new Selection(data);
 
@@ -36,23 +45,19 @@ void setup()
     }
     plots[i] = new DataPlot(data, mainSelection, i);
     sparks[i] = new SparkLine(25, 250 + i * 20, 425, 265 + i * 20, data, mainSelection, plots[i], i);
+    sparks[i].setFont(smallFont);
+    sparks[i].setHoverFont(bodyFont);
   }
 
   overSparks = new SparkManager(25, 215, 425, 750, sparks);
   overSparks.setupOrder(data);
-  
-//  bodyFont = createFont("Encode Sans Condensed", 20);
-//  displayFont = createFont("Libre Caslon Text", 50);
-  bodyFont = createFont("EncodeSansCondensed-Regular.ttf", 12);
-  headerFont = createFont("LibreCaslonText-Bold.ttf", 16);
-  displayFont = createFont("LibreCaslonText-Bold.ttf", 50.5);
   
   main = new TimePlot(25, 95, width, 145, data, mainSelection);
   main.setFont(bodyFont);
   main.setUsage(mainUsage);
   
   second = new IndexChart(400, 215, 1024, 768, data, mainSelection);
-  second.setFont(bodyFont);
+  second.setFont(smallFont);
   
   assignColour();
 

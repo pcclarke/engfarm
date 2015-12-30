@@ -135,7 +135,8 @@ class IndexChart {
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col), font);
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col));
+          detail.setFont(font);
         }
       }
     }

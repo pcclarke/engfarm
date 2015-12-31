@@ -13,37 +13,49 @@
 		+
 		+ - - - - - - - - - - - - - - - - - - - - -->
 		<style type="text/css">
-	body {
-	  background-color: #333; color: #bbb; line-height: normal;
-	  font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
-	  font-size: 11px; font-weight: normal; text-decoration: none;
-		  line-height: 1.5em;
-	}
-	a img { 
-		border: 0px solid transparent;
-	}
-	a, a:link, a:visited, a:active, a:hover { 
-		color: #cdcdcd; text-decoration: underline;
-	}
-	h1 {
-	    font-family: Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
-		width: 100%; letter-spacing: 0.1em;
-		margin-bottom: 1em; font-size: 1.65em;
-	}
-	canvas { 
-		display: block; 
-		outline: 0px; 
-		margin-bottom: 1.5em; 
-	}
-	#content { 
-		margin: 50px auto 0px auto; padding: 25px 25px 15px 25px;
-		width: 1024px; min-width: 300px; overflow: auto;
-		border-left: 1px solid #444; border-top: 1px solid #444; 
-		border-right: 1px solid #333; border-bottom: 1px solid #333;
-		background-color: #3d3d3d;
-	}
+			body {
+				background-color: #7C7B77; 
+				color: #323232; 
+				line-height: normal;
+				font-family: "Encode Sans Condensed", Helvetica Neue, Verdana, Geneva, sans-serif;
+				font-size: 11px; font-weight: normal; text-decoration: none;
+				line-height: 1.5em;
+			}
+			a img { 
+				border: 0px solid transparent;
+			}
+			a, a:link, a:visited, a:active, a:hover { 
+				color: #323232; text-decoration: underline;
+			}
+			h1 {
+				width: 100%; letter-spacing: 0.1em;
+				margin-bottom: 1em; font-size: 1.65em;
+			}
+			canvas { 
+				display: block; 
+				outline: 0px; 
+				margin-bottom: 1.5em; 
+			}
+			#content { 
+				margin: 50px auto 0px auto; 
+				padding: 25px 25px 15px 25px;
+				width: 1024px; min-width: 300px; 
+				overflow: auto;
+				border: 1px solid #808080;
+				background-color: #FCF9F0;
+			}
+			#details {
+				margin-left: 25px;
+			}
+			@font-face {
+				font-family: "Encode Sans Condensed";
+				src: url("EncodeSansCondensed-Regular.ttf") format('truetype');
+			}
+			@font-face {
+			  font-family: "Libre Caslon Text";
+			  src: url("LibreCaslonText-Bold.ttf") format('truetype');
+			}
 		</style>
-		<link href='/engfarm-style.css' rel='stylesheet' type='text/css'>
 		<!--[if lt IE 9]>
 			<script type="text/javascript">alert("Your browser does not support the canvas tag.");</script>
 		<![endif]-->
@@ -67,13 +79,14 @@ function getProcessingSketchId () { return 'engfarm'; }
 					<p>JavaScript is required to view the contents of this page.</p>
 				</noscript>
 	    	</div>
-			<h1>engfarm</h1>
-    		<p id="description"></p>
-			<p id="sources">Source code: <a href="engfarm.pde">engfarm</a> </p>
-			<p>
-			Built with <a href="http://processing.org" title="Processing">Processing</a>
-			and <a href="http://processingjs.org" title="Processing.js">Processing.js</a>
-			</p>
+		    	<div id="details">
+	    		<p id="description">The data in this visualization comes from a series of <a href="http://faculty.econ.ucdavis.edu/faculty/gclark/data.html">22 domestic English farm products 1500-1914</a>, which are described in Gregory Clark's book A Farewell to Alms.</p>
+				<p id="sources">Source code: <a href="engfarm.pde">engfarm</a> </p>
+				<p>
+				Built with <a href="http://processing.org" title="Processing">Processing</a>
+				and <a href="http://processingjs.org" title="Processing.js">Processing.js</a>
+				</p>
+			</div>
 		</div>
 	</body>
 </html>

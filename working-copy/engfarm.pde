@@ -1,7 +1,7 @@
-/* @pjs font="/EncodeSansCondensed-Regular.ttf, /LibreCaslonText-Bold.ttf"; */
-    
 int selectMinRow, selectMaxRow;
 float bigFloat = 1000000; // poor substitute for not being able to use Float.MAX_VALUE
+
+PFont smallFont, bodyFont, headerFont, displayFont;
 
 DataPlot[] plots;
 TimePlot main;
@@ -11,13 +11,19 @@ SparkLine[] sparks;
 SparkManager overSparks;
 IndexChart second;
 
-PFont body20, gillDisplay;
-
-void setup()
-{
+void setup() {
   size(1024, 768);
 
   data = new FloatTable("farm2002.csv");
+  
+  smallFont = createFont("Encode Sans Condensed", 10);
+  bodyFont = createFont("Encode Sans Condensed", 12);
+  headerFont = createFont("Libre Caslon Text", 16);
+  displayFont = createFont("Libre Caslon Text", 50);
+//  smallFont = createFont("EncodeSansCondensed-Regular.ttf", 10);
+//  bodyFont = createFont("EncodeSansCondensed-Regular.ttf", 12);
+//  headerFont = createFont("LibreCaslonText-Bold.ttf", 16);
+//  displayFont = createFont("LibreCaslonText-Bold.ttf", 50.5);
 
   mainSelection = new Selection(data);
 
@@ -36,19 +42,19 @@ void setup()
     }
     plots[i] = new DataPlot(data, mainSelection, i);
     sparks[i] = new SparkLine(25, 250 + i * 20, 425, 265 + i * 20, data, mainSelection, plots[i], i);
+    sparks[i].setFont(smallFont);
+    sparks[i].setHoverFont(bodyFont);
   }
 
   overSparks = new SparkManager(25, 215, 425, 750, sparks);
   overSparks.setupOrder(data);
   
-  body20 = createFont("Encode Sans Condensed", 20);
-  gillDisplay = createFont("Libre Caslon Text", 50);
-  
   main = new TimePlot(25, 95, width, 145, data, mainSelection);
-  main.setFont(body20);
+  main.setFont(bodyFont);
   main.setUsage(mainUsage);
   
   second = new IndexChart(400, 215, 1024, 768, data, mainSelection);
+  second.setFont(smallFont);
   
   assignColour();
 
@@ -59,19 +65,19 @@ void draw() {
   background(252, 249, 240);
   
   textAlign(LEFT, BOTTOM);
-  textFont(gillDisplay);
+  textFont(displayFont);
   //fill(119, 118, 112);
   fill(100);
-  textSize(48);
+  textSize(50);
   text("English Agricultural Prices 1500\u20131914", 25, 60);
 
   fill(50);
-  textFont(body20);
+  textFont(bodyFont);
   textSize(10);
   text("low", 267, 205);
   text("high", 307, 205);
 
-  textFont(gillDisplay);
+  textFont(headerFont);
   fill(100);
   textSize(16);
   text("Price Indices", 25, 90);
@@ -87,7 +93,6 @@ void draw() {
 
 void mousePressed() {
   main.mPressed();
-  second.mPressed();
   
   if (overSparks.checkMouse()) {
     for(int i = 0; i < data.getColumnCount(); i++) {
@@ -203,6 +208,8 @@ class Button {
   color borderColour;
   boolean selected;
   boolean showBorder, hasSub;
+  
+  PFont font;
 
   Button (float inputX1, float inputY1, float inputX2, float inputY2, String inputName, int inputCategory) {
     x1 = min(inputX1, inputX2);
@@ -211,6 +218,8 @@ class Button {
     y2 = max(inputY1, inputY2);
     name = inputName;
     category = inputCategory;
+    
+    this.font = createFont("Arial", 10);
 
     fillOffColour = color(252, 249, 240);
     fillOnColour = color(240);
@@ -230,6 +239,10 @@ class Button {
     y1 = min(inputy1, inputy2);
     x2 = max(inputx1, inputx2);
     y2 = max(inputy1, inputy2);
+  }
+  
+  void setFont(PFont font) {
+    this.font = font;
   }
 
   // Set the alignment of text to the left 'l', center 'c', or right 'r'
@@ -691,22 +704,19 @@ class FloatTable {
     return med;
   }
 
-  float getQ3(int col)
-  {
+  float getQ3(int col) {
     float[] fullCol = new float[rowCount];
     float med = 0;
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (data[i][col] > 0) {
-          fullCol[goodCount] = data[i][col];
-          goodCount++;
-        }
+        fullCol[goodCount] = data[i][col];
+        goodCount++;
       }
     }
 
     fullCol = subset(fullCol, 0, goodCount);
-
+   
     Quicksort findMed = new Quicksort();
     findMed.sort(fullCol);
     med = findMed.getQ3();
@@ -857,48 +867,55 @@ class FloatTable {
 
 class HoverBox {
   float x, y, w, h;
-  PFont font;
   String hoverText;
   
-  HoverBox (float inputX, float inputY, String inputText, PFont font) {
+  PFont font;
+  
+  HoverBox (float inputX, float inputY, String inputText) {
     x = inputX;
     y = inputY;
     hoverText = inputText;
+    this.font = createFont("Arial", 12);
     
     w = 6 * hoverText.length();
     h = 15;
-    
-    this.font = font;
   }
   
   void drawHover() {
-    fill(255, 255, 255, 200);
-    stroke(128);
-    strokeWeight(1);
-    rectMode(CENTER);
     if (x + w * .5 > width) {
-      rect(x - .5 * w, y -12, w, h);
+      drawHoverBox(x - 0.5 * w, y - 12);
+      drawHoverText(x - 0.5 * w, y - 8);
     } else if (x - w * .5 < 0) {
-      rect(x + .5 * w, y -12, w, h);
+      drawHoverBox(x + 0.5 * 5, y - 12);
+      drawHoverText(x + 0.5 * w, y - 8);
     } else {
-      rect(x, y - 12, w, h);
-    }
-    
-    fill(0);
-    textFont(font);
-    textSize(12);
-    textAlign(CENTER);
-    if (x + w  * .5  > width) {
-      text(hoverText, x - .5 * w, y - 8);
-    } else if (x - w * .5 < 0) {
-       text(hoverText, x + .5 * w, y - 8); 
-    } else {
-      text(hoverText, x, y - 8);
+      drawHoverBox(x, y - 12);
+      drawHoverText(x, y - 8);
     }
     
     stroke(0);
     strokeWeight(10);
     point(x, y);
+  }
+  
+  void drawHoverBox(float xPos, float yPos) {
+    fill(255, 255, 255, 200);
+    stroke(128);
+    strokeWeight(1);
+    rectMode(CENTER);
+    rect(xPos, yPos, w, h);
+  }
+  
+  void drawHoverText(float xPos, float yPos) {
+    fill(0);
+    textFont(font);
+    textSize(12);
+    textAlign(CENTER);
+    text(hoverText, xPos, yPos);
+  }
+  
+  void setFont(PFont font) {
+    this.font = font;
   }
 }
 //********************************************************************
@@ -924,6 +941,8 @@ class IndexChart {
   int tickInterval = 1;
   int selYear1, selYear2;
   
+  PFont font;
+  
   FloatTable chartData;
   HoverBox detail;
   Selection indexSelect;
@@ -943,6 +962,7 @@ class IndexChart {
     
     background = color(255);
     plotColour = new color[chartData.getColumnCount()];
+    this.font = createFont("Arial", 20);
     
     usage = new boolean[chartData.getColumnCount()];
     
@@ -1035,7 +1055,8 @@ class IndexChart {
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col), body20);
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + ": " + chartData.getFloat(row, col));
+          detail.setFont(font);
         }
       }
     }
@@ -1044,7 +1065,7 @@ class IndexChart {
  
   void drawTicks() {
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(10);
     textAlign(RIGHT, CENTER);
     
@@ -1070,10 +1091,9 @@ class IndexChart {
     }
   }
   
-  void drawYearLabels() 
-  {
+  void drawYearLabels() {
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(10);
     textAlign(CENTER, TOP);
     
@@ -1094,6 +1114,10 @@ class IndexChart {
     }
   }
   
+  void setFont(PFont font) {
+    this.font = font;
+  }
+  
   void setUsage(int index) {
     if(usage[index]) {
       usage[index] = false;
@@ -1104,37 +1128,6 @@ class IndexChart {
     greyed = new boolean[usage.length];
     
     update();
-  }
-  
-  void mPressed() {
-    if(checkMouse()) {
-      if (mouseButton == LEFT) {
-        if (dist(mouseX, mouseY, mouseTrackX, mouseTrackY) < 2) {
-          greyed[mouseOver] = greyed[mouseOver] ? false : true;
-        } else {
-          selX1 = mouseX;
-          if (selX1 < plotX2) {
-            selX2 = mouseX + 1;
-          } else {
-            selX2 = mouseX - 1;
-          }
-          selMode = true;
-        }
-      }
-    }
-  }
-  
-  void mDragged() {
-    if(checkMouse()) {
-      if (selMode) {
-        selX2 = mouseX;
-        if (mouseX <= plotX1) {
-          selX2 = plotX1;
-        } else if (mouseX >= plotX2) {
-          selX2 = plotX2;
-        }
-      }
-    }
   }
   
   boolean checkMouse() {
@@ -1251,17 +1244,17 @@ public class Quicksort  {
   }
 
   float getPivot() {
-    float median = numbers[(numbers.length) / 2];
+    float median = numbers[floor((numbers.length) / 2)];
     return median;
   }
 
   float getQ1() {
-    float q1 = numbers[int((numbers.length) / 4)];
+    float q1 = numbers[floor((numbers.length) / 4)];
     return q1;
   }
 
   float getQ3() {
-    float median = numbers[3 * (numbers.length) / 4];
+    float median = numbers[floor(3 * (numbers.length) / 4)];
     return median;
   }
 } 
@@ -1453,6 +1446,8 @@ class SparkLine {
   int yearInterval = 50;
   int tickInterval = 25;
   
+  PFont font, hoverFont;
+  
   Button title;
   DataPlot sparkPlot;
   FloatTable sparkData;
@@ -1460,20 +1455,23 @@ class SparkLine {
   RoundButton toIndexChart, lock;
   Selection sparkSelect;
   
-  SparkLine (float inputX1, float inputY1, float inputX2, float inputY2, FloatTable inputData, Selection inputSelect, DataPlot inputPlot, int inputColumn) {
-    x1 = inputX1;
-    y1 = inputY1;
-    x2 = inputX2;
-    y2 = inputY2;
-    plotX1 = x1 + 90;
-    plotY1 = inputY1;
-    plotX2 = inputX1 + (.57 * (x2 - x1));
-    plotY2 = inputY2;
+  SparkLine (float x1, float y1, float x2, float y2, FloatTable inputData, Selection inputSelect, DataPlot inputPlot, int column) {
+    this.x1 = min(x1, x2);
+    this.y1 = min(y1, y2);
+    this.x2 = max(x1, x2);
+    this.y2 = max(y1, y2);
+    plotX1 = this.x1 + 90;
+    plotY1 = this.y1;
+    plotX2 = this.x1 + (.57 * (this.x2 - this.x1));
+    plotY2 = this.y2;
 
     sparkData = inputData;
     sparkPlot = inputPlot;
     sparkSelect = inputSelect;
-    column = inputColumn;
+    this.column = column;
+    
+    this.font = createFont("Arial", 10);
+    this.hoverFont = createFont("Arial", 12);
     
     bg = color(240);
     normal = color(230);
@@ -1512,7 +1510,7 @@ class SparkLine {
   void drawSparkLine() {
     showDetail = false;
     
-    textFont(body20);
+    textFont(font);
     textSize(10);
 
     if(mDragging && checkMouse()) {
@@ -1547,7 +1545,9 @@ class SparkLine {
       rect(plotX1, topNormal, plotX2, bottomNormal);*/
 
       // IQR Bands
+      // Q1 - bottom
       float q1Plot = map(q1, dataMin, dataMax, plotY2, plotY1);
+      
       if (q1Plot < plotY2) {
         fill(245);
         rectMode(CORNERS);
@@ -1560,7 +1560,10 @@ class SparkLine {
         }
       }
       
+      // Q4 - top
       float q3Plot = map(q3, dataMin, dataMax, plotY2, plotY1);
+      //println("name: " + sparkData.getColumnName(column) + " q3: " + q3 + " dataMin: " + dataMin + " dataMax: " + dataMax);
+      //println("name: " + sparkData.getColumnName(column) + " q3Plot: " + q3Plot + " plotY1: " + plotY1 + " plotY2: " + plotY2);
       if (q3Plot > plotY1) {
         fill(200);
         rectMode(CORNERS);
@@ -1590,6 +1593,7 @@ class SparkLine {
       }
 
       float medLine = map(median, dataMin, dataMax, plotY2, plotY1);
+      // println("name: " + sparkData.getColumnName(column) + " medLine: " + medLine + " q1Plot: " + q1Plot + " q3Plot: " + q3Plot);
       if (medLine > plotY1 && medLine < plotY2) {
         stroke(255);
         strokeWeight(1);
@@ -1656,7 +1660,8 @@ class SparkLine {
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, sparkData.getColumnName(col) + " " + years[row] + ": " + value, body20);
+          detail = new HoverBox(x, y, sparkData.getColumnName(col) + " " + years[row] + ": " + value);
+          detail.setFont(hoverFont);
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey
@@ -1698,7 +1703,7 @@ class SparkLine {
  
   void drawTicks() {
     fill(0);
-    textFont(body20);
+    textFont(font);
     textSize(10);
     textAlign(RIGHT, CENTER);
     
@@ -1796,6 +1801,14 @@ class SparkLine {
   void setColour(color inputColour) {
     plotColour = inputColour;
     toIndexChart.setFillOffColour(plotColour);
+  }
+  
+  void setFont(PFont font) {
+    this.font = font;
+  }
+  
+  void setHoverFont(PFont font) {
+    this.hoverFont = font;
   }
 }
 //********************************************************************
@@ -1936,9 +1949,7 @@ class SparkManager {
       float yNext = y1;
       for (int i = 0; i < managedSparks.length; i++) {
         if (bifocal) {
-	  if((i == zoomCenter) || (i + 1 == zoomCenter) || (i - 1 == zoomCenter)
-	                       || (i + 2 == zoomCenter) || (i - 2 == zoomCenter)
-	                       || (i + 3 == zoomCenter) || (i - 3 == zoomCenter)) {
+          if (zoomCenter >= i - 3 && zoomCenter <= i + 3) { 
 	    managedSparks[sparkOrder[i]].setY(yNext, yNext + floor(heightBig * .75));		
             yNext = yNext + heightBig;
 	  } else {
@@ -2001,7 +2012,7 @@ class TimePlot {
     
     background = color(255);
     plotColour = new color[chartData.getColumnCount()];
-    this.font = createFont("Arial", 20);
+    this.font = createFont("Arial", 12);
     
     rowCount = chartData.getRowCount();
     years = chartData.getRowNames();
@@ -2119,7 +2130,8 @@ class TimePlot {
           mouseTrackX = mouseX;
           mouseTrackY = mouseY;
           mouseOver = col;
-          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value, font);
+          detail = new HoverBox(x, y, chartData.getColumnName(col) + " " + years[row] + ": " + value);
+          detail.setFont(font);
         }
       }
       // If previous data was valid, but this one isn't, start drawing in grey

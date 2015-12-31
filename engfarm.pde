@@ -20,8 +20,8 @@ void setup() {
   
   smallFont = createFont("Encode Sans Condensed", 10);
   bodyFont = createFont("Encode Sans Condensed", 12);
-  headerFont = createFont("Libre Caslon Text", 50.5);
-  displayFont = createFont("Libre Caslon Text", 50.5);
+  headerFont = createFont("Libre Caslon Text", 16);
+  displayFont = createFont("Libre Caslon Text", 50);
 //  smallFont = createFont("EncodeSansCondensed-Regular.ttf", 10);
 //  bodyFont = createFont("EncodeSansCondensed-Regular.ttf", 12);
 //  headerFont = createFont("LibreCaslonText-Bold.ttf", 16);
@@ -70,7 +70,7 @@ void draw() {
   textFont(displayFont);
   //fill(119, 118, 112);
   fill(100);
-  textSize(50.5);
+  textSize(50);
   text("English Agricultural Prices 1500\u20131914", 25, 60);
 
   fill(50);

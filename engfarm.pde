@@ -13,8 +13,7 @@ SparkLine[] sparks;
 SparkManager overSparks;
 IndexChart second;
 
-void setup()
-{
+void setup() {
   size(1024, 768);
 
   data = new FloatTable("farm2002.csv");

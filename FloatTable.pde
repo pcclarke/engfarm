@@ -230,22 +230,19 @@ class FloatTable {
     return med;
   }
 
-  float getQ3(int col)
-  {
+  float getQ3(int col) {
     float[] fullCol = new float[rowCount];
     float med = 0;
     int goodCount = 0;
     for (int i = 0; i < rowCount; i++) {
       if (isValid(i, col)) {
-        if (data[i][col] > 0) {
-          fullCol[goodCount] = data[i][col];
-          goodCount++;
-        }
+        fullCol[goodCount] = data[i][col];
+        goodCount++;
       }
     }
 
     fullCol = subset(fullCol, 0, goodCount);
-
+   
     Quicksort findMed = new Quicksort();
     findMed.sort(fullCol);
     med = findMed.getQ3();

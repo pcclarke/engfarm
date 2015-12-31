@@ -64,17 +64,17 @@ public class Quicksort  {
   }
 
   float getPivot() {
-    float median = numbers[(numbers.length) / 2];
+    float median = numbers[floor((numbers.length) / 2)];
     return median;
   }
 
   float getQ1() {
-    float q1 = numbers[int((numbers.length) / 4)];
+    float q1 = numbers[floor((numbers.length) / 4)];
     return q1;
   }
 
   float getQ3() {
-    float median = numbers[3 * (numbers.length) / 4];
+    float median = numbers[floor(3 * (numbers.length) / 4)];
     return median;
   }
 } 

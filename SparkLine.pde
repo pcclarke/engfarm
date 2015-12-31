@@ -28,20 +28,20 @@ class SparkLine {
   RoundButton toIndexChart, lock;
   Selection sparkSelect;
   
-  SparkLine (float inputX1, float inputY1, float inputX2, float inputY2, FloatTable inputData, Selection inputSelect, DataPlot inputPlot, int inputColumn) {
-    x1 = inputX1;
-    y1 = inputY1;
-    x2 = inputX2;
-    y2 = inputY2;
-    plotX1 = x1 + 90;
-    plotY1 = inputY1;
-    plotX2 = inputX1 + (.57 * (x2 - x1));
-    plotY2 = inputY2;
+  SparkLine (float x1, float y1, float x2, float y2, FloatTable inputData, Selection inputSelect, DataPlot inputPlot, int column) {
+    this.x1 = min(x1, x2);
+    this.y1 = min(y1, y2);
+    this.x2 = max(x1, x2);
+    this.y2 = max(y1, y2);
+    plotX1 = this.x1 + 90;
+    plotY1 = this.y1;
+    plotX2 = this.x1 + (.57 * (this.x2 - this.x1));
+    plotY2 = this.y2;
 
     sparkData = inputData;
     sparkPlot = inputPlot;
     sparkSelect = inputSelect;
-    column = inputColumn;
+    this.column = column;
     
     this.font = createFont("Arial", 10);
     this.hoverFont = createFont("Arial", 12);
@@ -118,7 +118,9 @@ class SparkLine {
       rect(plotX1, topNormal, plotX2, bottomNormal);*/
 
       // IQR Bands
+      // Q1 - bottom
       float q1Plot = map(q1, dataMin, dataMax, plotY2, plotY1);
+      
       if (q1Plot < plotY2) {
         fill(245);
         rectMode(CORNERS);
@@ -131,7 +133,10 @@ class SparkLine {
         }
       }
       
+      // Q4 - top
       float q3Plot = map(q3, dataMin, dataMax, plotY2, plotY1);
+      //println("name: " + sparkData.getColumnName(column) + " q3: " + q3 + " dataMin: " + dataMin + " dataMax: " + dataMax);
+      //println("name: " + sparkData.getColumnName(column) + " q3Plot: " + q3Plot + " plotY1: " + plotY1 + " plotY2: " + plotY2);
       if (q3Plot > plotY1) {
         fill(200);
         rectMode(CORNERS);
@@ -161,6 +166,7 @@ class SparkLine {
       }
 
       float medLine = map(median, dataMin, dataMax, plotY2, plotY1);
+      // println("name: " + sparkData.getColumnName(column) + " medLine: " + medLine + " q1Plot: " + q1Plot + " q3Plot: " + q3Plot);
       if (medLine > plotY1 && medLine < plotY2) {
         stroke(255);
         strokeWeight(1);
